@@ -22,6 +22,27 @@ public class Router<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.resume()
     }
     
+    func json<T: Codable>(_ router: EndPoint, type: T.Type, completion: @escaping ((_ data: T?, _ response: URLResponse?, _ error: Error?) -> Swift.Void)) {
+        
+        do {
+            let request = try self.buildRequest(from: router)
+            
+            self.task = session.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(nil, response, error)
+                } else if let data = data {
+                    let element = try? JSONDecoder().decode(type, from: data)
+                    completion(element, response, error)
+                }
+            }
+            
+            self.task?.resume()
+        } catch {
+            completion(nil, nil, error)
+        }
+        self.task?.resume()
+    }
+    
     func cancel() {
         self.task?.cancel()
     }
@@ -29,38 +50,47 @@ public class Router<EndPoint: EndPointType>: NetworkRouterProtocol {
     fileprivate func buildRequest(from route: EndPoint) throws -> URLRequest {
         var request = URLRequest(url: route.baseURL.appendingPathComponent(route.path), cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
         
-        switch route.task {
-        case .request:
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        case .requestParameters(let bodyParameters, let bodyEncoding, let urlParameters):
-            try self.configureParameters(bodyParameters: bodyParameters, bodyEncoding: bodyEncoding, urlParameters: urlParameters, request: &request)
-        case .requestParametersAndHeaders(let bodyParameters, let bodyEncoding, let urlParameters, let additionHeaders):
-            self.additionalHeaders(additionHeaders, request: &request)
-            try self.configureParameters(bodyParameters: bodyParameters, bodyEncoding: bodyEncoding, urlParameters: urlParameters, request: &request)
+        request.setValue("application/\(route.format)", forHTTPHeaderField: "Content-Type")
+        self.additionalUrlParameters(route.urlParameters, request: &request)
+        self.appendingQueryParameters(route.queriesParameters, request: &request)
+        
+        switch route.httpMethod {
+        case .get, .head, .delete:
+            break
+        case .put, .post, .patch:
+            try route.encoder?.encode(urlRequest: &request, bodyParameters: route.bodyParameters)
         }
         return request
-    }
-    
-    fileprivate func configureParameters(bodyParameters: Parameters?, bodyEncoding: ParameterEncoder, urlParameters: Parameters?, request: inout URLRequest) throws {
-        do {
-            switch bodyEncoding {
-            case .jsonEncoding:
-                try JSONParameterEncoder.encoder(urlRequest: &request, with: bodyParameters)
-            case .urlEncoding:
-                try URLParameterEncoder.encoder(urlRequest: &request, with: urlParameters)
-            case .urlAndJsonEncoding:
-                try JSONParameterEncoder.encoder(urlRequest: &request, with: bodyParameters)
-                try URLParameterEncoder.encoder(urlRequest: &request, with: urlParameters)
-            }
-        } catch {
-            throw error
-        }
     }
     
     fileprivate func additionalHeaders(_ additionHeaders: HTTPHeaders?, request: inout URLRequest) {
         guard let headers = additionHeaders else { return }
         for (key, value) in headers {
             request.setValue(value, forHTTPHeaderField: key)
+        }
+    }
+    
+    fileprivate func appendingQueryParameters(_ parameters : Parameters?, request: inout URLRequest) {
+        guard let parameters = parameters else { return }
+        guard let url = request.url else { return }
+        let URLString : String = String(format: "%@?%@", url.absoluteString, parameters.queryParameters)
+        request.url = URL(string: URLString)!
+    }
+    
+    fileprivate func additionalUrlParameters(_ urlParameters: Parameters?, request: inout URLRequest) {
+        
+        guard let parameters = urlParameters else { return }
+        guard let url = request.url else { return }
+        
+        if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false), !parameters.isEmpty {
+            urlComponents.queryItems = [URLQueryItem]()
+            
+            for (key,value) in parameters {
+                let queryItem = URLQueryItem(name: key, value: "\(value)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))
+                urlComponents.queryItems?.append(queryItem)
+            }
+            
+            request.url = urlComponents.url
         }
     }
 }

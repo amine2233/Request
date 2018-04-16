@@ -69,11 +69,10 @@ public enum Environement: String, NetworkEnvironmentProtocol {
             return false
         }
     }
-    
 }
 
 enum PostEndPoint {
-    case all
+    case all(page: Int)
     case get(slug: String)
 }
 
@@ -92,6 +91,10 @@ extension PostEndPoint: EndPointType {
         }
     }
     
+    var format: HTTPFormat {
+        return .json
+    }
+    
     var httpMethod: HttpMethod {
         return .get
     }
@@ -103,11 +106,34 @@ extension PostEndPoint: EndPointType {
     var headers: HTTPHeaders? {
         return nil
     }
+    
+    var queriesParameters: Parameters? {
+        switch self {
+        case .all(let page):
+            return ["page": page]
+        default:
+            return nil
+        }
+    }
+    
+    var bodyParameters: Parameters? {
+        return nil
+    }
+    
+    var urlParameters: Parameters? {
+        return nil
+    }
+    
+    var encoder: ParameterEncoder? {
+        return nil
+    }
 }
 
 final class PostNetworkManager: NetworkManager {
     static let environment : Environement = .develop
     let router = Router<PostEndPoint>()
+    
+    
 }
 
 
@@ -126,7 +152,8 @@ class Request_Tests: XCTestCase {
     }
     
     func testExample() {
-        PostNetworkManager().router.request(.all) { (data, response, _) in
+        PostNetworkManager().router.request(.all(page: 2)) { (data, response, _) in
+            print("response: ", response)
             if let data = data {
                 do {
                     print("data: ", data)
