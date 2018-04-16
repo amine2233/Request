@@ -87,7 +87,7 @@ extension PostEndPoint: EndPointType {
         case .all:
             return "posts"
         case .get(let slug):
-            return "/posts/\(slug)"
+            return "posts/\(slug)"
         }
     }
     
@@ -152,8 +152,20 @@ class Request_Tests: XCTestCase {
     }
     
     func testExample() {
-        PostNetworkManager().router.request(.all(page: 2)) { (data, response, _) in
-            print("response: ", response)
+//        PostNetworkManager().router.request(.all(page: 2)) { (data, response, _) in
+//            if let data = data {
+//                do {
+//                    print("data: ", data)
+//                    let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+//                    print("json: ", jsonData)
+//                } catch {
+//                    print("error:", error)
+//                }
+//            }
+//        }
+        
+        PostNetworkManager().router.request(.get(slug: "post-1")) { (data, response, _) in
+            print("response:", response!)
             if let data = data {
                 do {
                     print("data: ", data)

@@ -22,7 +22,7 @@ public class Router<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.resume()
     }
     
-    func json<T: Codable>(_ router: EndPoint, type: T.Type, completion: @escaping ((_ data: T?, _ response: URLResponse?, _ error: Error?) -> Swift.Void)) {
+    func jsonRequest<T: Codable>(_ router: EndPoint, _ type: T.Type, completion: @escaping ((_ data: T?, _ response: URLResponse?, _ error: Error?) -> Swift.Void)) {
         
         do {
             let request = try self.buildRequest(from: router)
