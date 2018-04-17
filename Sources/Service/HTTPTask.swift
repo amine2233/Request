@@ -11,7 +11,6 @@ public typealias HTTPHeaders = [String:String]
 
 public enum HTTPTask {
     case request
-    case requestParameters(bodyParameters: Parameters?, bodyEncoding: ParameterEncoder, urlParameters: Parameters?, queryParameters: Parameters?)
-    case requestParametersAndHeaders(bodyParameters: Parameters?, bodyEncoding: ParameterEncoder, urlParameters: Parameters?, queryParameters: Parameters?, additionHeaders: HTTPHeaders?)
-    // case download, upload
+    case download
+    case upload(from: Data?)
 }

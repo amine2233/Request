@@ -7,12 +7,19 @@
 
 import Foundation
 
-public class Router<EndPoint: EndPointType>: NetworkRouterProtocol {
+public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
     private var task: URLSessionTask?
     fileprivate let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.init())
     
+    public var isDebug: Bool
+    fileprivate var logger: NetworkLoggerProtocol?
+    
+    init(isDebug: Bool = false, logger: NetworkLoggerProtocol? = nil) {
+        self.isDebug = isDebug
+        self.logger = logger
+    }
+    
     func request(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) {
-        
         do {
             let request = try self.buildRequest(from: router)
             task = session.dataTask(with: request, completionHandler: completion)
@@ -43,6 +50,32 @@ public class Router<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.resume()
     }
     
+    func download(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) {
+        do {
+            let request = try self.buildRequest(from: router)
+            task = session.dataTask(with: request, completionHandler: completion)
+        } catch {
+            completion(nil, nil, error)
+        }
+        self.task?.resume()
+    }
+    
+    func download(_ url: URL, completion: @escaping NetworkRouterCompletion) {
+        let request = URLRequest.init(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
+        task = session.dataTask(with: request, completionHandler: completion)
+        self.task?.resume()
+    }
+    
+    func upload(_ router: EndPoint, from: Data?, completion: @escaping NetworkRouterCompletion) {
+        do {
+            let request = try self.buildRequest(from: router)
+            task = session.uploadTask(with: request, from: from, completionHandler: completion)
+        } catch {
+            completion(nil, nil, error)
+        }
+        self.task?.resume()
+    }
+    
     func cancel() {
         self.task?.cancel()
     }
@@ -60,6 +93,11 @@ public class Router<EndPoint: EndPointType>: NetworkRouterProtocol {
         case .put, .post, .patch:
             try route.encoder?.encode(urlRequest: &request, bodyParameters: route.bodyParameters)
         }
+        
+        if isDebug {
+            self.logger?.log(route: route, request: request)
+        }
+        
         return request
     }
     

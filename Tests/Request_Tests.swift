@@ -127,11 +127,29 @@ extension PostEndPoint: EndPointType {
     var encoder: ParameterEncoder? {
         return nil
     }
+    
+    var name: String {
+        switch self {
+        case .all:
+            return "all"
+        case .get:
+            return "get"
+        }
+    }
+    
+    var dubugDescription: String {
+        switch self {
+        case .all(let page):
+            return "\(self.name) post at page: \(page)"
+        case .get(let slug):
+            return "\(self.name) post with slug: \(slug)"
+        }
+    }
 }
 
 final class PostNetworkManager: NetworkManager {
     static let environment : Environement = .develop
-    let router = Router<PostEndPoint>()
+    let router = NetworkRouter<PostEndPoint>(isDebug: true, logger: NetworkLogger())
     
     
 }

@@ -24,4 +24,12 @@ public protocol EndPointType {
     var bodyParameters: Parameters? { get }
     var urlParameters: Parameters? { get }
     var encoder: ParameterEncoder? { get }
+    var name: String { get }
+    var dubugDescription: String { get }
+}
+
+extension EndPointType {
+    var dubugDescription: String {
+        return ""
+    }
 }
