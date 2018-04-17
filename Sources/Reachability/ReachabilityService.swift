@@ -1,0 +1,151 @@
+// https://www.invasivecode.com/weblog/network-reachability-in-swift/
+
+import Foundation
+import SystemConfiguration
+
+let kReachabilityDidChangeNotificationName = "ReachabilityDidChangeNotification"
+
+enum ReachabilityStatus {
+    case notReachable
+    case wifiReachable
+    case wwanReachable
+}
+
+/**
+ * How to use reachability
+ *
+ * var reachability: ReachabilityService? = ReachabilityService.networkReachabilityForLocalWiFi()
+ *
+ * @discardableResult
+ * func configureReachability() -> Self {
+ *    NotificationCenter.default.addObserver(self, selector: #selector(reachabilityDidChange(_:)), name: NSNotification.Name(rawValue: kReachabilityDidChangeNotificationName), object: nil)
+ *    reachability?.start()
+ *    return self
+ * }
+ *
+ * @objc func reachabilityDidChange(_ notification: Notification?) {
+ *     guard let r = reachability else { return }
+ *     if r.isReachability {
+ *        self.rootViewController.view.backgroundColor = UIColor(colorName: ColorName.blackPearl)
+ *        self.add(children: self.rootTabBarController)
+ *     } else {
+ *        self.rootViewController.view.backgroundColor = .red
+ *        self.remove(children: self.rootTabBarController)
+ *     }
+ * }
+ */
+class ReachabilityService {
+    
+    private var networkReachability: SCNetworkReachability?
+    private var notifying: Bool = false
+    private var flags: SCNetworkReachabilityFlags {
+        var flags = SCNetworkReachabilityFlags(rawValue: 0)
+        if let reachability = networkReachability, withUnsafeMutablePointer(to: &flags, { SCNetworkReachabilityGetFlags(reachability, UnsafeMutablePointer($0)) }) == true {
+            return flags
+        } else {
+            return []
+        }
+    }
+    
+    var currentReachabilityStatus: ReachabilityStatus {
+        if flags.contains(.reachable) == false {
+            // The target host is not reachable.
+            return .notReachable
+        } else if flags.contains(.isWWAN) == true {
+            // WWAN connections are OK if the calling application is using the CFNetwork APIs.
+            return .wwanReachable
+        } else if flags.contains(.connectionRequired) == false {
+            // If the target host is reachable and no connection is required then we'll assume that you're on Wi-Fi...
+            return .wifiReachable
+        } else if (flags.contains(.connectionOnDemand) == true || flags.contains(.connectionOnTraffic) == true ) && flags.contains(.interventionRequired) == false {
+            // The connection is on-demand (or on-traffic) if the calling application is using the CFSocketStream or higher APIs and no [user] intervention is needed
+            return .wifiReachable
+        } else {
+            return .notReachable
+        }
+    }
+    
+    var isReachability: Bool {
+        switch currentReachabilityStatus {
+        case .notReachable:
+            return false
+        case .wifiReachable, .wwanReachable:
+            return true
+        }
+    }
+    
+    init?(hostName: String) {
+        networkReachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, (hostName as NSString).utf8String!)
+        if networkReachability == nil {
+            return nil
+        }
+    }
+    
+    init?(hostAddress: sockaddr_in) {
+        var address = hostAddress
+        
+        guard let defaultRouteReachability = withUnsafePointer(to: &address, { $0.withMemoryRebound(to: sockaddr.self, capacity: 1, {
+            SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, $0) })
+        }) else {
+            return nil
+        }
+        
+        networkReachability = defaultRouteReachability
+        if networkReachability == nil {
+            return nil
+        }
+    }
+    
+    static func networkReachabilityForInternetConnection() -> ReachabilityService? {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        return ReachabilityService(hostAddress: zeroAddress)
+    }
+    
+    static func networkReachabilityForLocalWiFi() -> ReachabilityService? {
+        var localWifiAddress = sockaddr_in()
+        localWifiAddress.sin_len = UInt8(MemoryLayout.size(ofValue: localWifiAddress))
+        localWifiAddress.sin_family = sa_family_t(AF_INET)
+        // IN_LINKLOCALNETNUM is defined in <netinet/in.h> as 169.254.0.0 (0xA9FE0000).
+        localWifiAddress.sin_addr.s_addr = 0xA9FE0000
+        return ReachabilityService(hostAddress: localWifiAddress)
+    }
+    
+    @discardableResult
+    func start() -> Bool {
+        guard notifying == false else {
+            return false
+        }
+        
+        var context = SCNetworkReachabilityContext()
+        context.info = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
+        
+        guard let reachability = networkReachability, SCNetworkReachabilitySetCallback(reachability, { (_, _, info) in
+            if let currentInfo = info {
+                let infoObject = Unmanaged<AnyObject>.fromOpaque(currentInfo).takeUnretainedValue()
+                if infoObject is ReachabilityService {
+                    let networkReachability = infoObject as! ReachabilityService
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: kReachabilityDidChangeNotificationName), object: networkReachability)
+                }
+            }
+        }, &context) == true else { return false }
+        
+        guard SCNetworkReachabilityScheduleWithRunLoop(reachability, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue) == true else { return false }
+        
+        notifying = true
+        return notifying
+    }
+    
+    func stop() {
+        if let reachability = networkReachability, notifying == true {
+            SCNetworkReachabilityUnscheduleFromRunLoop(reachability, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode as! CFString)
+            notifying = false
+        }
+    }
+    
+    deinit {
+        stop()
+        debugPrint("ReachabilityService")
+    }
+}

@@ -77,6 +77,12 @@
 		679131682085F91500E815DD /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679131662085F91500E815DD /* NetworkLogger.swift */; };
 		679131692085F91500E815DD /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679131662085F91500E815DD /* NetworkLogger.swift */; };
 		6791316A2085F91500E815DD /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679131662085F91500E815DD /* NetworkLogger.swift */; };
+		679132492086BBE900E815DD /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679132482086BBE900E815DD /* ReachabilityService.swift */; };
+		6791324B2086BBE900E815DD /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679132482086BBE900E815DD /* ReachabilityService.swift */; };
+		6791324C2086BBE900E815DD /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679132482086BBE900E815DD /* ReachabilityService.swift */; };
+		6791324E2086BC1500E815DD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6791324D2086BC1500E815DD /* SystemConfiguration.framework */; };
+		679132502086BC2900E815DD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6791324F2086BC2900E815DD /* SystemConfiguration.framework */; };
+		679132522086BC3300E815DD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 679132512086BC3300E815DD /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +141,10 @@
 		6791315C2085E99700E815DD /* NetworkMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMiddleware.swift; sourceTree = "<group>"; };
 		679131612085F07600E815DD /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		679131662085F91500E815DD /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
+		679132482086BBE900E815DD /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
+		6791324D2086BC1500E815DD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		6791324F2086BC2900E815DD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS11.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		679132512086BC3300E815DD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6791324E2086BC1500E815DD /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +175,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				679132502086BC2900E815DD /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +191,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				679132522086BC3300E815DD /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,6 +233,7 @@
 		679130CF2084EB8700E815DD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				679132472086BBD900E815DD /* Reachability */,
 				6791315620855FA900E815DD /* Extensions */,
 				679131142084F3CA00E815DD /* Encoding */,
 				679131132084F3CA00E815DD /* EndPoint */,
@@ -285,6 +299,9 @@
 		6791314B208506F700E815DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6791324D2086BC1500E815DD /* SystemConfiguration.framework */,
+				6791324F2086BC2900E815DD /* SystemConfiguration.framework */,
+				679132512086BC3300E815DD /* SystemConfiguration.framework */,
 				679131542085073000E815DD /* Result.framework */,
 				679131522085072800E815DD /* Result.framework */,
 				679131502085072100E815DD /* Result.framework */,
@@ -300,6 +317,14 @@
 				6791315720855FA900E815DD /* URLQueryParameterStringConvertible.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		679132472086BBD900E815DD /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				679132482086BBE900E815DD /* ReachabilityService.swift */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -588,6 +613,7 @@
 				679131202084F3CA00E815DD /* ParameterEncoder.swift in Sources */,
 				679131422085047800E815DD /* NetworkRouter.swift in Sources */,
 				679131292084F3E000E815DD /* HTTPTask.swift in Sources */,
+				679132492086BBE900E815DD /* ReachabilityService.swift in Sources */,
 				679131472085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */,
 				679131242084F3CA00E815DD /* NetworkManager.swift in Sources */,
 				6791312E2084F47600E815DD /* NetworkError.swift in Sources */,
@@ -640,6 +666,7 @@
 				679131222084F3CA00E815DD /* ParameterEncoder.swift in Sources */,
 				679131442085047800E815DD /* NetworkRouter.swift in Sources */,
 				6791312B2084F3E000E815DD /* HTTPTask.swift in Sources */,
+				6791324B2086BBE900E815DD /* ReachabilityService.swift in Sources */,
 				679131492085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */,
 				679131262084F3CA00E815DD /* NetworkManager.swift in Sources */,
 				679131302084F47600E815DD /* NetworkError.swift in Sources */,
@@ -670,6 +697,7 @@
 				679131232084F3CA00E815DD /* ParameterEncoder.swift in Sources */,
 				679131452085047800E815DD /* NetworkRouter.swift in Sources */,
 				6791312C2084F3E000E815DD /* HTTPTask.swift in Sources */,
+				6791324C2086BBE900E815DD /* ReachabilityService.swift in Sources */,
 				6791314A2085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */,
 				679131272084F3CA00E815DD /* NetworkManager.swift in Sources */,
 				679131312084F47600E815DD /* NetworkError.swift in Sources */,
