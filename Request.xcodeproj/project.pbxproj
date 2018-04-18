@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		676B779A20874BF000D0FBA0 /* Request_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679130E62084EE1600E815DD /* Request_Tests.swift */; };
 		6791307C2084EAFA00E815DD /* Request.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 679130722084EAFA00E815DD /* Request.framework */; };
 		679130A52084EB1D00E815DD /* Request.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6791309C2084EB1D00E815DD /* Request.framework */; };
 		679130C12084EB2C00E815DD /* Request.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 679130B82084EB2C00E815DD /* Request.framework */; };
@@ -648,7 +647,6 @@
 				679131492085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */,
 				679131262084F3CA00E815DD /* NetworkManager.swift in Sources */,
 				679131302084F47600E815DD /* NetworkError.swift in Sources */,
-				676B779A20874BF000D0FBA0 /* Request_Tests.swift in Sources */,
 				679131352084F50000E815DD /* URLParameterEncoder.swift in Sources */,
 				6791311E2084F3CA00E815DD /* HTTPMethod.swift in Sources */,
 				6791315A20855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */,
