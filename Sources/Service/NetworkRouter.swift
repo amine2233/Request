@@ -14,12 +14,12 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
     public var isDebug: Bool
     fileprivate var logger: NetworkLoggerProtocol?
     
-    init(isDebug: Bool = false, logger: NetworkLoggerProtocol? = nil) {
+    public init(isDebug: Bool = false, logger: NetworkLoggerProtocol? = nil) {
         self.isDebug = isDebug
         self.logger = logger
     }
     
-    func request(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) {
+    public func request(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) {
         do {
             let request = try self.buildRequest(from: router)
             task = session.dataTask(with: request, completionHandler: completion)
@@ -29,7 +29,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.resume()
     }
     
-    func jsonRequest<T: Codable>(_ router: EndPoint, _ type: T.Type, completion: @escaping ((_ data: T?, _ response: URLResponse?, _ error: Error?) -> Swift.Void)) {
+    public func jsonRequest<T: Codable>(_ router: EndPoint, _ type: T.Type, completion: @escaping ((_ data: T?, _ response: URLResponse?, _ error: Error?) -> Swift.Void)) {
         
         do {
             let request = try self.buildRequest(from: router)
@@ -50,7 +50,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.resume()
     }
     
-    func download(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) {
+    public func download(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) {
         do {
             let request = try self.buildRequest(from: router)
             task = session.dataTask(with: request, completionHandler: completion)
@@ -60,13 +60,13 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.resume()
     }
     
-    func download(_ url: URL, completion: @escaping NetworkRouterCompletion) {
+    public func download(_ url: URL, completion: @escaping NetworkRouterCompletion) {
         let request = URLRequest.init(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
         task = session.dataTask(with: request, completionHandler: completion)
         self.task?.resume()
     }
     
-    func upload(_ router: EndPoint, from: Data?, completion: @escaping NetworkRouterCompletion) {
+    public func upload(_ router: EndPoint, from: Data?, completion: @escaping NetworkRouterCompletion) {
         do {
             let request = try self.buildRequest(from: router)
             task = session.uploadTask(with: request, from: from, completionHandler: completion)

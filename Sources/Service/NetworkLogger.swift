@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NetworkLoggerProtocol {
+public protocol NetworkLoggerProtocol {
     @discardableResult
     func log(route: EndPointType, request: URLRequest) -> Self
     @discardableResult
@@ -16,10 +16,10 @@ protocol NetworkLoggerProtocol {
     func log(route: EndPointType, response: HTTPURLResponse) -> Self
 }
 
-class NetworkLogger: NetworkLoggerProtocol {
+final public class NetworkLogger: NetworkLoggerProtocol {
     
     @discardableResult
-    func log(route: EndPointType, request: URLRequest) -> Self {
+    public func log(route: EndPointType, request: URLRequest) -> Self {
         
         print("\n - - - - - - - - - - NetworkRoute: \(route.name) BEGIN - - - - - - - - - - \n")
         print("\n - - - - - - - - - - Detail: \(route.dubugDescription) - - - - - - - - - - \n")
@@ -51,7 +51,7 @@ class NetworkLogger: NetworkLoggerProtocol {
     }
     
     @discardableResult
-    func log(route: EndPointType, response: URLResponse) -> Self {
+    public func log(route: EndPointType, response: URLResponse) -> Self {
         
         print("\n - - - - - - - - - - ResponseRoute: \(route.name) BEGIN - - - - - - - - - - \n")
         print("\n - - - - - - - - - - Detail: \(route.dubugDescription) - - - - - - - - - - \n")
@@ -76,7 +76,7 @@ class NetworkLogger: NetworkLoggerProtocol {
     }
     
     @discardableResult
-    func log(route: EndPointType, response: HTTPURLResponse) -> Self {
+    public func log(route: EndPointType, response: HTTPURLResponse) -> Self {
         
         print("\n - - - - - - - - - - ResponseRoute: \(route.name) BEGIN - - - - - - - - - - \n")
         print("\n - - - - - - - - - - Detail: \(route.dubugDescription) - - - - - - - - - - \n")
