@@ -29,7 +29,7 @@ enum ReachabilityStatus {
  *        self.rootViewController.view.backgroundColor = UIColor(colorName: ColorName.blackPearl)
  *        self.add(children: self.rootTabBarController)
  *     } else {
- *        self.rootViewController.view.backgroundColor = .red
+ *        self.rootViewController.view.blsackgroundColor = .red
  *        self.remove(children: self.rootTabBarController)
  *     }
  * }
