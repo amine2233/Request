@@ -77,12 +77,12 @@ enum PostEndPoint {
 }
 
 extension PostEndPoint: EndPointType {
-    var baseURL: URL {
+    public var baseURL: URL {
         guard let url = URL(string: Environement.develop.apiAbsoluteURL) else { fatalError("baseURL could not be configured.") }
         return url
     }
     
-    var path: String {
+    public var path: String {
         switch self {
         case .all:
             return "posts"
@@ -91,23 +91,23 @@ extension PostEndPoint: EndPointType {
         }
     }
     
-    var format: HTTPFormat {
+    public var format: HTTPFormat {
         return .json
     }
     
-    var httpMethod: HttpMethod {
+    public var httpMethod: HttpMethod {
         return .get
     }
     
-    var task: HTTPTask {
+    public var task: HTTPTask {
         return .request
     }
     
-    var headers: HTTPHeaders? {
+    public var headers: HTTPHeaders? {
         return nil
     }
     
-    var queriesParameters: Parameters? {
+    public var queriesParameters: Parameters? {
         switch self {
         case .all(let page):
             return ["page": page]
@@ -116,19 +116,19 @@ extension PostEndPoint: EndPointType {
         }
     }
     
-    var bodyParameters: Parameters? {
+    public var bodyParameters: Parameters? {
         return nil
     }
     
-    var urlParameters: Parameters? {
+    public var urlParameters: Parameters? {
         return nil
     }
     
-    var encoder: ParameterEncoder? {
+    public var encoder: ParameterEncoder? {
         return nil
     }
     
-    var name: String {
+    public var name: String {
         switch self {
         case .all:
             return "all"
@@ -137,7 +137,7 @@ extension PostEndPoint: EndPointType {
         }
     }
     
-    var dubugDescription: String {
+    public var dubugDescription: String {
         switch self {
         case .all(let page):
             return "\(self.name) post at page: \(page)"
@@ -150,8 +150,6 @@ extension PostEndPoint: EndPointType {
 final class PostNetworkManager: NetworkManager {
     static let environment : Environement = .develop
     let router = NetworkRouter<PostEndPoint>(isDebug: true, logger: NetworkLogger())
-    
-    
 }
 
 

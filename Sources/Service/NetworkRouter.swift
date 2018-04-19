@@ -76,7 +76,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.resume()
     }
     
-    func cancel() {
+    public func cancel() {
         self.task?.cancel()
     }
     

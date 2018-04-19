@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		675E5A1D2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A1B2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift */; };
+		675E5A1E2088EF2400F7C35B /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A1B2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift */; };
+		675E5A1F2088EF2400F7C35B /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A1B2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift */; };
+		675E5A202088EF2500F7C35B /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A1B2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift */; };
+		675E5A222088EF3B00F7C35B /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A212088EF3B00F7C35B /* UIImageViewExtension.swift */; };
+		675E5A242088EF4000F7C35B /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A212088EF3B00F7C35B /* UIImageViewExtension.swift */; };
+		675E5A262088F38800F7C35B /* NetworkDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A252088F38800F7C35B /* NetworkDownloadManager.swift */; };
+		675E5A272088F4DF00F7C35B /* NetworkDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675E5A252088F38800F7C35B /* NetworkDownloadManager.swift */; };
 		6791307C2084EAFA00E815DD /* Request.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 679130722084EAFA00E815DD /* Request.framework */; };
 		679130A52084EB1D00E815DD /* Request.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6791309C2084EB1D00E815DD /* Request.framework */; };
 		679130C12084EB2C00E815DD /* Request.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 679130B82084EB2C00E815DD /* Request.framework */; };
@@ -61,10 +69,6 @@
 		679131482085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679131462085062700E815DD /* NetworkEnvironmentProtocol.swift */; };
 		679131492085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679131462085062700E815DD /* NetworkEnvironmentProtocol.swift */; };
 		6791314A2085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679131462085062700E815DD /* NetworkEnvironmentProtocol.swift */; };
-		6791315820855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791315720855FA900E815DD /* URLQueryParameterStringConvertible.swift */; };
-		6791315920855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791315720855FA900E815DD /* URLQueryParameterStringConvertible.swift */; };
-		6791315A20855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791315720855FA900E815DD /* URLQueryParameterStringConvertible.swift */; };
-		6791315B20855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791315720855FA900E815DD /* URLQueryParameterStringConvertible.swift */; };
 		6791315D2085E99700E815DD /* NetworkMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791315C2085E99700E815DD /* NetworkMiddleware.swift */; };
 		6791315E2085E99700E815DD /* NetworkMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791315C2085E99700E815DD /* NetworkMiddleware.swift */; };
 		6791315F2085E99700E815DD /* NetworkMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791315C2085E99700E815DD /* NetworkMiddleware.swift */; };
@@ -106,6 +110,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		675E5A1B2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLQueryParameterStringConvertible.swift; sourceTree = "<group>"; };
+		675E5A212088EF3B00F7C35B /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
+		675E5A252088F38800F7C35B /* NetworkDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDownloadManager.swift; sourceTree = "<group>"; };
 		679130722084EAFA00E815DD /* Request.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Request.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6791307B2084EAFA00E815DD /* Request.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Request.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6791308F2084EB0C00E815DD /* Request.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Request.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,7 +135,6 @@
 		6791313C2084F6CC00E815DD /* NetworkRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouterProtocol.swift; sourceTree = "<group>"; };
 		679131412085047800E815DD /* NetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouter.swift; sourceTree = "<group>"; };
 		679131462085062700E815DD /* NetworkEnvironmentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEnvironmentProtocol.swift; sourceTree = "<group>"; };
-		6791315720855FA900E815DD /* URLQueryParameterStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLQueryParameterStringConvertible.swift; sourceTree = "<group>"; };
 		6791315C2085E99700E815DD /* NetworkMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMiddleware.swift; sourceTree = "<group>"; };
 		679131612085F07600E815DD /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		679131662085F91500E815DD /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
@@ -191,6 +197,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		675E5A192088EF1E00F7C35B /* AppKit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AppKit;
+			sourceTree = "<group>";
+		};
+		675E5A1A2088EF1F00F7C35B /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				675E5A1B2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		675E5A1C2088EF1F00F7C35B /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				675E5A212088EF3B00F7C35B /* UIImageViewExtension.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
 		679130662084EAE000E815DD = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +306,7 @@
 			children = (
 				679131172084F3CA00E815DD /* NetworkManager.swift */,
 				679131462085062700E815DD /* NetworkEnvironmentProtocol.swift */,
+				675E5A252088F38800F7C35B /* NetworkDownloadManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -291,7 +321,9 @@
 		6791315620855FA900E815DD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				6791315720855FA900E815DD /* URLQueryParameterStringConvertible.swift */,
+				675E5A192088EF1E00F7C35B /* AppKit */,
+				675E5A1A2088EF1F00F7C35B /* Foundation */,
+				675E5A1C2088EF1F00F7C35B /* UIKit */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -584,7 +616,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				675E5A262088F38800F7C35B /* NetworkDownloadManager.swift in Sources */,
 				679131672085F91500E815DD /* NetworkLogger.swift in Sources */,
+				675E5A1D2088EF1F00F7C35B /* URLQueryParameterStringConvertible.swift in Sources */,
 				6791315D2085E99700E815DD /* NetworkMiddleware.swift in Sources */,
 				679131382084F63D00E815DD /* JSONParameterEncoder.swift in Sources */,
 				679131202084F3CA00E815DD /* ParameterEncoder.swift in Sources */,
@@ -596,7 +630,7 @@
 				6791312E2084F47600E815DD /* NetworkError.swift in Sources */,
 				679131332084F50000E815DD /* URLParameterEncoder.swift in Sources */,
 				6791311C2084F3CA00E815DD /* HTTPMethod.swift in Sources */,
-				6791315820855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */,
+				675E5A222088EF3B00F7C35B /* UIImageViewExtension.swift in Sources */,
 				679131182084F3CA00E815DD /* EndPointType.swift in Sources */,
 				679131622085F07600E815DD /* CacheService.swift in Sources */,
 				6791313D2084F6CC00E815DD /* NetworkRouterProtocol.swift in Sources */,
@@ -624,9 +658,9 @@
 				679131482085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */,
 				679131252084F3CA00E815DD /* NetworkManager.swift in Sources */,
 				6791312F2084F47600E815DD /* NetworkError.swift in Sources */,
+				675E5A1E2088EF2400F7C35B /* URLQueryParameterStringConvertible.swift in Sources */,
 				679131342084F50000E815DD /* URLParameterEncoder.swift in Sources */,
 				6791311D2084F3CA00E815DD /* HTTPMethod.swift in Sources */,
-				6791315920855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */,
 				679131192084F3CA00E815DD /* EndPointType.swift in Sources */,
 				679131632085F07600E815DD /* CacheService.swift in Sources */,
 				6791313E2084F6CC00E815DD /* NetworkRouterProtocol.swift in Sources */,
@@ -637,7 +671,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				675E5A272088F4DF00F7C35B /* NetworkDownloadManager.swift in Sources */,
 				679131692085F91500E815DD /* NetworkLogger.swift in Sources */,
+				675E5A1F2088EF2400F7C35B /* URLQueryParameterStringConvertible.swift in Sources */,
 				6791315F2085E99700E815DD /* NetworkMiddleware.swift in Sources */,
 				6791313A2084F63D00E815DD /* JSONParameterEncoder.swift in Sources */,
 				679131222084F3CA00E815DD /* ParameterEncoder.swift in Sources */,
@@ -649,7 +685,7 @@
 				679131302084F47600E815DD /* NetworkError.swift in Sources */,
 				679131352084F50000E815DD /* URLParameterEncoder.swift in Sources */,
 				6791311E2084F3CA00E815DD /* HTTPMethod.swift in Sources */,
-				6791315A20855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */,
+				675E5A242088EF4000F7C35B /* UIImageViewExtension.swift in Sources */,
 				6791311A2084F3CA00E815DD /* EndPointType.swift in Sources */,
 				679131642085F07600E815DD /* CacheService.swift in Sources */,
 				6791313F2084F6CC00E815DD /* NetworkRouterProtocol.swift in Sources */,
@@ -677,9 +713,9 @@
 				6791314A2085062700E815DD /* NetworkEnvironmentProtocol.swift in Sources */,
 				679131272084F3CA00E815DD /* NetworkManager.swift in Sources */,
 				679131312084F47600E815DD /* NetworkError.swift in Sources */,
+				675E5A202088EF2500F7C35B /* URLQueryParameterStringConvertible.swift in Sources */,
 				679131362084F50000E815DD /* URLParameterEncoder.swift in Sources */,
 				6791311F2084F3CA00E815DD /* HTTPMethod.swift in Sources */,
-				6791315B20855FA900E815DD /* URLQueryParameterStringConvertible.swift in Sources */,
 				6791311B2084F3CA00E815DD /* EndPointType.swift in Sources */,
 				679131652085F07600E815DD /* CacheService.swift in Sources */,
 				679131402084F6CC00E815DD /* NetworkRouterProtocol.swift in Sources */,
