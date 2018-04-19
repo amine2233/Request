@@ -7,8 +7,8 @@
 
 import UIKit
 
-extension UIImageView {
-    func image(stringUtl: String?, placeholder: UIImage? = nil, activity: UIActivityIndicatorView? = nil) {
+public extension UIImageView {
+    public func image(stringUtl: String?, placeholder: UIImage? = nil, activity: UIActivityIndicatorView? = nil) {
         
         guard let stringUtl = stringUtl else {
             self.image = placeholder
