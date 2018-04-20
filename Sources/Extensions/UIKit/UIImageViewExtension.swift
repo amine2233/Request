@@ -8,30 +8,19 @@
 import UIKit
 
 public extension UIImageView {
-    public func image(stringUtl: String?, placeholder: UIImage? = nil, activity: UIActivityIndicatorView? = nil) {
-        
-        guard let stringUtl = stringUtl else {
-            self.image = placeholder
-            return
-        }
-        
-        if let data = DownloadCacheService.shared.get(key: stringUtl) {
-            self.image = UIImage(data: data)
-        } else {
-            activity?.startAnimating()
-            NetworkDownloadManager.shared.download(url: stringUtl) { (data, response, error) in
-                DispatchQueue.main.async {
-                    activity?.stopAnimating()
-                    if let data = data {
-                        DownloadCacheService.shared.add(key: stringUtl, data: data)
-                        self.image = UIImage(data: data)
-                    } else {
-                        self.image = placeholder
-                    }
-                    if let error = error {
-                        debugPrint("error:", error)
-                        self.image = placeholder
-                    }
+    public func image<T: EndPointType>(network: NetworkRouter<T>, router: T, placeholder: UIImage? = nil, activity: UIActivityIndicatorView? = nil) {
+        activity?.startAnimating()
+        network.download(router) { (data, response, error) in
+            DispatchQueue.main.async {
+                activity?.stopAnimating()
+                if let data = data {
+                    self.image = UIImage(data: data)
+                } else {
+                    self.image = placeholder
+                }
+                if let error = error {
+                    debugPrint("error:", error)
+                    self.image = placeholder
                 }
             }
         }

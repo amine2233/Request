@@ -18,6 +18,8 @@ public protocol NetworkLoggerProtocol {
 
 final public class NetworkLogger: NetworkLoggerProtocol {
     
+    public init() {}
+    
     @discardableResult
     public func log(route: EndPointType, request: URLRequest) -> Self {
         

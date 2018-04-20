@@ -11,11 +11,9 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
     private var task: URLSessionTask?
     fileprivate let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.init())
     
-    public var isDebug: Bool
     fileprivate var logger: NetworkLoggerProtocol?
     
-    public init(isDebug: Bool = false, logger: NetworkLoggerProtocol? = nil) {
-        self.isDebug = isDebug
+    public init(logger: NetworkLoggerProtocol? = nil) {
         self.logger = logger
     }
     
@@ -94,7 +92,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
             try route.encoder?.encode(urlRequest: &request, bodyParameters: route.bodyParameters)
         }
         
-        if isDebug {
+        if route.isDebug {
             self.logger?.log(route: route, request: request)
         }
         
@@ -109,7 +107,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
     }
     
     fileprivate func appendingQueryParameters(_ parameters : Parameters?, request: inout URLRequest) {
-        guard let parameters = parameters else { return }
+        guard let parameters = parameters, !parameters.isEmpty else { return }
         guard let url = request.url else { return }
         let URLString : String = String(format: "%@?%@", url.absoluteString, parameters.queryParameters)
         request.url = URL(string: URLString)!
@@ -117,7 +115,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
     
     fileprivate func additionalUrlParameters(_ urlParameters: Parameters?, request: inout URLRequest) {
         
-        guard let parameters = urlParameters else { return }
+        guard let parameters = urlParameters, !parameters.isEmpty else { return }
         guard let url = request.url else { return }
         
         if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false), !parameters.isEmpty {

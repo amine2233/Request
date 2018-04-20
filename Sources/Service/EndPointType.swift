@@ -26,10 +26,15 @@ public protocol EndPointType {
     var encoder: ParameterEncoder? { get }
     var name: String { get }
     var dubugDescription: String { get }
+    var isDebug: Bool { get }
 }
 
 extension EndPointType {
     var dubugDescription: String {
         return ""
+    }
+    
+    var isDebug: Bool {
+        return false
     }
 }
