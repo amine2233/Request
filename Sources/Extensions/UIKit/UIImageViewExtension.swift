@@ -7,19 +7,27 @@
 
 import UIKit
 
+// MARK: NetworkRouter UIImageView
 public extension UIImageView {
+    
+    /**
+     Request a new Image for showing in UIImageView
+     
+     - Parameter network: Use the appropriete network for download picture
+     - Parameter router: Use the appropriete router for injected in network to set all properties to download picture
+     - Parameter placeholder: Use placeholder picture if download failed or if can't get a picture data
+     - Parameter activity: Use for show downloading progress
+     */
     public func image<T: EndPointType>(network: NetworkRouter<T>, router: T, placeholder: UIImage? = nil, activity: UIActivityIndicatorView? = nil) {
         activity?.startAnimating()
         network.download(router) { (data, response, error) in
             DispatchQueue.main.async {
                 activity?.stopAnimating()
-                if let data = data {
+                if error != nil {
+                    self.image = placeholder
+                } else if let data = data {
                     self.image = UIImage(data: data)
                 } else {
-                    self.image = placeholder
-                }
-                if let error = error {
-                    debugPrint("error:", error)
                     self.image = placeholder
                 }
             }

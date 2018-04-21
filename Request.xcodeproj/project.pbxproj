@@ -82,6 +82,7 @@
 		679132492086BBE900E815DD /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679132482086BBE900E815DD /* ReachabilityService.swift */; };
 		6791324B2086BBE900E815DD /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679132482086BBE900E815DD /* ReachabilityService.swift */; };
 		67F5A8FF208A41E500F6CF81 /* NSImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F5A8FE208A41E500F6CF81 /* NSImageView.swift */; };
+		67F5A903208B21B400F6CF81 /* WKImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F5A902208B21B400F6CF81 /* WKImageViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +139,7 @@
 		679131662085F91500E815DD /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
 		679132482086BBE900E815DD /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		67F5A8FE208A41E500F6CF81 /* NSImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImageView.swift; sourceTree = "<group>"; };
+		67F5A902208B21B400F6CF81 /* WKImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKImageViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,6 +306,7 @@
 		6791315620855FA900E815DD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				67F5A901208B21B400F6CF81 /* WatchKit */,
 				67F5A8FD208A41E500F6CF81 /* AppKit */,
 				675E5A1A2088EF1F00F7C35B /* Foundation */,
 				675E5A1C2088EF1F00F7C35B /* UIKit */,
@@ -325,6 +328,14 @@
 				67F5A8FE208A41E500F6CF81 /* NSImageView.swift */,
 			);
 			path = AppKit;
+			sourceTree = "<group>";
+		};
+		67F5A901208B21B400F6CF81 /* WatchKit */ = {
+			isa = PBXGroup;
+			children = (
+				67F5A902208B21B400F6CF81 /* WKImageViewExtension.swift */,
+			);
+			path = WatchKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -641,6 +652,7 @@
 			files = (
 				679131682085F91500E815DD /* NetworkLogger.swift in Sources */,
 				6791315E2085E99700E815DD /* NetworkMiddleware.swift in Sources */,
+				67F5A903208B21B400F6CF81 /* WKImageViewExtension.swift in Sources */,
 				679131392084F63D00E815DD /* JSONParameterEncoder.swift in Sources */,
 				679131212084F3CA00E815DD /* ParameterEncoder.swift in Sources */,
 				679131432085047800E815DD /* NetworkRouter.swift in Sources */,

@@ -7,7 +7,15 @@
 
 import Foundation
 
+/// URL Encodeur for standart request
 public struct URLParameterEncoder: ParameterEncoderProtocol {
+    
+    /**
+     Encoding body request
+     
+     - Parameter urlRequest: The URLRequest construct
+     - Parameter bodyParameters: the parameters we will add in request for send
+     */
     public static func encoder(urlRequest: inout URLRequest, with parameters: Parameters?) throws {
         guard let url = urlRequest.url else { throw NetworkError.missingURL }
         guard let parameters = parameters else { throw NetworkError.parametersNil }

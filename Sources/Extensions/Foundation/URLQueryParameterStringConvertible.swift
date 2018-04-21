@@ -14,10 +14,13 @@ protocol URLQueryParameterStringConvertible {
 
 extension Dictionary : URLQueryParameterStringConvertible {
     /**
-     This computed property returns a query parameters string from the given NSDictionary. For
-     example, if the input is @{@"day":@"Tuesday", @"month":@"January"}, the output
-     string will be @"day=Tuesday&month=January".
-     @return The computed parameters string.
+     This computed property returns a query parameters string from the given NSDictionary.
+     
+        For example,
+        if the input is @{@"day":@"Tuesday", @"month":@"January"},
+        the output string will be @"day=Tuesday&month=January".
+     
+     - Returns: The computed parameters string.
      */
     var queryParameters: String {
         var parts: [String] = []
@@ -35,8 +38,10 @@ extension Dictionary : URLQueryParameterStringConvertible {
 extension URL {
     /**
      Creates a new URL by adding the given query parameters.
-     @param parametersDictionary The query parameter dictionary to add.
-     @return A new URL.
+     
+     - Parameter parametersDictionary: The query parameter dictionary to add.
+     
+     - Return A new URL.
      */
     func appendingQueryParameters(_ parametersDictionary : [String:String]) -> URL {
         let URLString : String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
