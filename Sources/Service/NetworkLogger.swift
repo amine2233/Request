@@ -7,17 +7,46 @@
 
 import Foundation
 
+/// Network logger protocol
 public protocol NetworkLoggerProtocol {
+    /**
+     Network logger request
+     
+     - Parameter route: The endpoint router
+     - Parameter request: The url request
+     
+     - Returns: The NewtorkLoggerProtocol for chaining loging
+    */
     @discardableResult
     func log(route: EndPointType, request: URLRequest) -> Self
+    
+    /**
+     Network logger response
+     
+     - Parameter route: The endpoint router
+     - Parameter response: The url response
+     
+     - Returns: The NewtorkLoggerProtocol for chaining loging
+     */
     @discardableResult
     func log(route: EndPointType, response: URLResponse) -> Self
+    
+    /**
+     Network logger url & body response
+     
+     - Parameter route: The endpoint router
+     - Parameter request: The http url response
+     
+     - Returns: The NewtorkLoggerProtocol for chaining loging
+     */
     @discardableResult
     func log(route: EndPointType, response: HTTPURLResponse) -> Self
 }
 
+/// The standard network logger
 final public class NetworkLogger: NetworkLoggerProtocol {
     
+    /// Initilise NetworkLogger
     public init() {}
     
     @discardableResult

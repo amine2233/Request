@@ -7,12 +7,25 @@
 
 import Foundation
 
+/// The Network Router use it for request endpoint type
 public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
+    
+    /// The url session task
     private var task: URLSessionTask?
+    
+    /// The natif url session
     fileprivate let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.init())
     
+    /// The network logger
     fileprivate var logger: NetworkLoggerProtocol?
     
+    /**
+     The network router initializer
+     
+     - Parameter logger: The Network logger
+     
+     - Returns: The NetworkRouter Object
+    */
     public init(logger: NetworkLoggerProtocol? = nil) {
         self.logger = logger
     }
@@ -78,6 +91,15 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.task?.cancel()
     }
     
+    /**
+     Build the request with endpoint
+     
+     - Parameter from: The endpoint we will use for request
+     
+     - Throws: `NetworkError.parametersNil` parameters is nil when try to construct json body
+     - Throws: `NetworkError.encodingFailed` failed encoding json
+     - Throws: `NetworkError.missingURL` can't build url
+     */
     fileprivate func buildRequest(from route: EndPoint) throws -> URLRequest {
         var request = URLRequest(url: route.baseURL.appendingPathComponent(route.path), cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
         
@@ -99,6 +121,12 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         return request
     }
     
+    /**
+     Add additional headers parameters
+     
+     - Parameter additionHeaders: The header parameters for this request
+     - Parameter request: The url request
+     */
     fileprivate func additionalHeaders(_ additionHeaders: HTTPHeaders?, request: inout URLRequest) {
         guard let headers = additionHeaders else { return }
         for (key, value) in headers {
@@ -106,6 +134,12 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         }
     }
     
+    /**
+     Add query parameters
+     
+     - Parameter parameters: The query parameters for this request
+     - Parameter request: The url request
+     */
     fileprivate func appendingQueryParameters(_ parameters : Parameters?, request: inout URLRequest) {
         guard let parameters = parameters, !parameters.isEmpty else { return }
         guard let url = request.url else { return }
@@ -113,6 +147,12 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         request.url = URL(string: URLString)!
     }
     
+    /**
+     Add url parameters
+     
+     - Parameter urlParameters: The url parameters for this request
+     - Parameter request: The url request
+     */
     fileprivate func additionalUrlParameters(_ urlParameters: Parameters?, request: inout URLRequest) {
         
         guard let parameters = urlParameters, !parameters.isEmpty else { return }

@@ -7,62 +7,134 @@
 
 import Foundation
 
+/// Cache Service Protocol
 protocol CacheServiceProtocol {
+    /// The Key object must be an AnyObject
     associatedtype Key: AnyObject
-    associatedtype Object: AnyObject
-    func add(key: Key, data: Object)
-    func get(key: Key) -> Object?
-    func replace(key: Key, data: Object) -> Object?
-    func remove(key: Key) -> Object?
+    /// The Value object must be an AnyObject
+    associatedtype Value: AnyObject
+    
+    /**
+     Add object with key in cache
+     
+     - Parameter key: The Key object
+     - Parameter value: The Value object
+     */
+    func add(key: Key, value: Value)
+    
+    /**
+     Get object with key in cache
+     
+     - Parameter key: The Key object
+     
+     - Returns: The value object or nil
+     */
+    func get(key: Key) -> Value?
+    
+    /**
+     Replace object with key in cache
+     
+     - Parameter key: The Key object
+     - Parameter value: The Value object
+     
+     - Returns: The old value Object or nil
+     */
+    func replace(key: Key, value: Value) -> Value?
+    
+    /**
+     Remove object with key in cache
+     
+     - Parameter key: The Key object
+     
+     - Returns: The old value Object or nil
+     */
+    func remove(key: Key) -> Value?
 }
 
-class CacheService<Key:AnyObject,Object:AnyObject>: CacheServiceProtocol {
+/// Cache default service
+public class CacheService<Key: AnyObject, Value: AnyObject>: CacheServiceProtocol {
     
-    private let cache: NSCache<Key,Object>
+    private let cache: NSCache<Key,Value>
     
-    init() {
-        self.cache = NSCache<Key,Object>()
+    public init() {
+        self.cache = NSCache<Key,Value>()
     }
     
-    func add(key: Key, data: Object) {
-        self.cache.setObject(data, forKey: key)
+    public func add(key: Key, value: Value) {
+        self.cache.setObject(value, forKey: key)
     }
     
-    func get(key: Key) -> Object? {
+    public func get(key: Key) -> Value? {
         return self.cache.object(forKey: key)
     }
     
     /// Replace data
     /// returns Old data
     @discardableResult
-    func replace(key: Key, data: Object) -> Object? {
+    public func replace(key: Key, value: Value) -> Value? {
         let oldData = self.get(key: key)
-        self.add(key: key, data: data)
+        self.add(key: key, value: value)
         return oldData
     }
     
     @discardableResult
-    func remove(key: Key) -> Object? {
+    public func remove(key: Key) -> Value? {
         let data = self.get(key: key)
         self.cache.removeObject(forKey: key)
         return data
     }
 }
 
-class DownloadCacheService {
-    static let shared = DownloadCacheService()
+/// Downloader cache default service
+public final class DownloadCacheService {
+    
+    /// Shared service object
+    public static let shared = DownloadCacheService()
+    
+    /// Cache service
     private let cache = CacheService<NSString,NSData>()
     
-    func add(key: String, data: Data) {
-        self.cache.add(key: key as NSString, data: data as NSData)
+    /**
+     Add object with key in cache
+     
+     - Parameter key: The String Key
+     - Parameter data: The Data object
+     */
+    public func add(key: String, data: Data) {
+        self.cache.add(key: key as NSString, value: data as NSData)
     }
-    func get(key: String) -> Data? {
+    
+    /**
+     Get object with key in cache
+     
+     - Parameter key: The String Key
+     
+     - Returns: The data object or nil
+     */
+    public func get(key: String) -> Data? {
         return self.cache.get(key: key as NSString) as Data?
     }
-    func replace(key: String, data: Data) -> Data? {
-        return self.cache.replace(key: key as NSString, data: data as NSData) as Data?
+    
+    /**
+     Replace object with key in cache
+     
+     - Parameter key: The String Key
+     - Parameter data: The data object
+     
+     - Returns: The old data Object or nil
+     */
+    public func replace(key: String, data: Data) -> Data? {
+        return self.cache.replace(key: key as NSString, value: data as NSData) as Data?
     }
-    func remove(key: String) -> Data? {
+    
+    /**
+     Remove object with key in cache
+     
+     - Parameter key: The String Key
+     
+     - Returns: The old data Object or nil
+     */
+    public func remove(key: String) -> Data? {
         return self.cache.remove(key: key as NSString) as Data?
     }
 }
