@@ -104,6 +104,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         var request = URLRequest(url: route.baseURL.appendingPathComponent(route.path), cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
         
         request.setValue("application/\(route.format)", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = route.httpMethod.rawValue
         self.additionalUrlParameters(route.urlParameters, request: &request)
         self.appendingQueryParameters(route.queriesParameters, request: &request)
         

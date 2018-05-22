@@ -174,6 +174,10 @@ struct PostRouter: EndPointType {
 }
 
 final class PostNetworkManager: NetworkManagerProtocol {
+    init(logger: NetworkLoggerProtocol) {
+        self.network = NetworkRouter<PostRouter>(logger: logger)
+    }
+    
     private(set) var network: NetworkRouter<PostRouter>
     
     public init(logger: NetworkLogger = NetworkLogger()) {
@@ -203,18 +207,6 @@ PostNetworkManager().network.request(endPoint) { (data, response, _) in
             print("data: ", data)
             let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
             print("json: ", jsonData)
-        } catch {
-            print("error:", error)
-        }
-    }
-}
-
-let pictureEndPoint = PostRouter.init(.picture(image: "post-1.jpg"), environement: .develop)
-PostNetworkManager().network.download(endPoint) { (data, response, _) in
-    print("response:", response!)
-    if let data = data {
-        do {
-            print("data: ", data)
         } catch {
             print("error:", error)
         }
