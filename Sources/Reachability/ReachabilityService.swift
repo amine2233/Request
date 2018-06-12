@@ -3,9 +3,9 @@
 import Foundation
 import SystemConfiguration
 
-let kReachabilityDidChangeNotificationName = "ReachabilityDidChangeNotification"
+public let kReachabilityDidChangeNotificationName = "ReachabilityDidChangeNotification"
 
-enum ReachabilityStatus {
+public enum ReachabilityStatus {
     case notReachable
     case wifiReachable
     case wwanReachable
@@ -34,7 +34,7 @@ enum ReachabilityStatus {
  *     }
  * }
  */
-class ReachabilityService {
+public class ReachabilityService {
     
     private var networkReachability: SCNetworkReachability?
     private var notifying: Bool = false
@@ -47,7 +47,7 @@ class ReachabilityService {
         }
     }
     
-    var currentReachabilityStatus: ReachabilityStatus {
+    public var currentReachabilityStatus: ReachabilityStatus {
         if flags.contains(.reachable) == false {
             // The target host is not reachable.
             return .notReachable
@@ -65,7 +65,7 @@ class ReachabilityService {
         }
     }
     
-    var isReachability: Bool {
+    public var isReachability: Bool {
         switch currentReachabilityStatus {
         case .notReachable:
             return false
@@ -74,14 +74,14 @@ class ReachabilityService {
         }
     }
     
-    init?(hostName: String) {
+    public init?(hostName: String) {
         networkReachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, (hostName as NSString).utf8String!)
         if networkReachability == nil {
             return nil
         }
     }
     
-    init?(hostAddress: sockaddr_in) {
+    public init?(hostAddress: sockaddr_in) {
         var address = hostAddress
         
         guard let defaultRouteReachability = withUnsafePointer(to: &address, { $0.withMemoryRebound(to: sockaddr.self, capacity: 1, {
@@ -96,14 +96,14 @@ class ReachabilityService {
         }
     }
     
-    static func networkReachabilityForInternetConnection() -> ReachabilityService? {
+    public static func networkReachabilityForInternetConnection() -> ReachabilityService? {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         return ReachabilityService(hostAddress: zeroAddress)
     }
     
-    static func networkReachabilityForLocalWiFi() -> ReachabilityService? {
+    public static func networkReachabilityForLocalWiFi() -> ReachabilityService? {
         var localWifiAddress = sockaddr_in()
         localWifiAddress.sin_len = UInt8(MemoryLayout.size(ofValue: localWifiAddress))
         localWifiAddress.sin_family = sa_family_t(AF_INET)
@@ -113,7 +113,7 @@ class ReachabilityService {
     }
     
     @discardableResult
-    func start() -> Bool {
+    public func start() -> Bool {
         guard notifying == false else {
             return false
         }
@@ -137,7 +137,7 @@ class ReachabilityService {
         return notifying
     }
     
-    func stop() {
+    public func stop() {
         if let reachability = networkReachability, notifying == true {
             SCNetworkReachabilityUnscheduleFromRunLoop(reachability, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode as! CFString)
             notifying = false

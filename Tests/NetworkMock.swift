@@ -48,8 +48,9 @@ class MockURLSession: URLSessionProtocol {
         return nextDataTask
     }
     
-    func sendSynchronousRequest(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+    func sendSynchronousRequest(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
         lastURL = request.url
         completionHandler(nextData, successHttpURLResponse(request: request), nextError)
+        return nextDataTask
     }
 }

@@ -36,7 +36,7 @@ public protocol URLSessionProtocol {
      * Send asynchronous request
      *
      */
-    func sendSynchronousRequest( request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
+    func sendSynchronousRequest( request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol
 }
 
 extension URLSessionDataTask: URLSessionDataTaskProtocol {}
@@ -56,14 +56,13 @@ extension URLSession: URLSessionProtocol {
 /// a sync request.
 extension URLSession {
     
-    public func sendSynchronousRequest( request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+    public func sendSynchronousRequest( request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
         let semaphore = DispatchSemaphore(value: 0)
         let task = self.dataTask(with: request) { data, response, error in
             completionHandler(data, response, error)
             semaphore.signal()
         }
-        
-        task.resume()
         semaphore.wait()
+        return task
     }
 }

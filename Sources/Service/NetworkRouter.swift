@@ -81,7 +81,6 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
     
     public func jsonResponse<T: Codable>(_ router: EndPoint, completion: @escaping ((Response<T>?, Error?) -> Swift.Void)) throws {
         let request = try self.buildRequest(from: router)
-        
         self.task = session.dataTask(request: request) { (data, response, error) in
             
             var result = Response<T>(with: router, urlResponse: response)
@@ -140,7 +139,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
     public func syncResponse<T: Codable>(_ router: EndPoint) throws -> (Response<T>?, Error?) {
         let request = try self.buildRequest(from: router)
         var result: (Response<T>?, Error?) = (nil,nil)
-        session.sendSynchronousRequest(request: request) { (data, response, error) in
+        task = session.sendSynchronousRequest(request: request) { (data, response, error) in
             var dataResponse = Response<T>(with: router, urlResponse: response)
             
             if let data = data {
@@ -157,6 +156,8 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
             result.0 = dataResponse
             result.1 = error
         }
+        
+        task?.resume()
         return result
     }
     

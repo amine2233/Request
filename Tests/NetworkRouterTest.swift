@@ -140,9 +140,9 @@ class NetworkRouterTest: XCTestCase {
         XCTAssertFalse(dataTask.resumeWasCalled)
         
         let allEndPoint = PostRouter.init(.all(page: 1), environement: .develop)
-        let result: (Response<Data>?, Error?) = try! self.networkRouter.syncResponse(allEndPoint)
+        let _: (Response<Data>?, Error?) = try! self.networkRouter.syncResponse(allEndPoint)
         
-        XCTAssertNil(result.0?.data)
+        XCTAssert(dataTask.resumeWasCalled)
     }
     
     func test_build_request_get_function() {

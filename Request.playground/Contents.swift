@@ -174,11 +174,11 @@ struct PostRouter: EndPointType {
 }
 
 final class PostNetworkManager: NetworkManagerProtocol {
-    private(set) var network: NetworkRouter<PostRouter>
-    
     init(logger: NetworkLoggerProtocol) {
         self.network = NetworkRouter<PostRouter>(logger: logger)
     }
+    
+    private(set) var network: NetworkRouter<PostRouter>
 
     public init(logger: NetworkLogger = NetworkLogger()) {
         self.network = NetworkRouter<PostRouter>(logger: logger)
@@ -189,11 +189,11 @@ let allEndPoint = PostRouter.init(.all(page: 1), environement: .develop)
 try? PostNetworkManager().network.request(allEndPoint) { (data, response, _) in
     if let data = data {
         do {
-            print("data: ", data)
+            print("data 1: ", data)
             let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-            print("json: ", jsonData)
+            print("json 1: ", jsonData)
         } catch {
-            print("error:", error)
+            print("error 1:", error)
         }
     }
 }
@@ -202,11 +202,11 @@ let endPoint = PostRouter.init(.get(slug: "post-1"), environement: .develop)
 try? PostNetworkManager().network.request(endPoint) { (data, response, _) in
     if let data = data {
         do {
-            print("data: ", data)
+            print("data 2: ", data)
             let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-            print("json: ", jsonData)
+            print("json 2: ", jsonData)
         } catch let error {
-            print("error:", error)
+            print("error 2:", error)
         }
     }
 }
@@ -215,10 +215,18 @@ let pictureEndPoint = PostRouter.init(.picture(image: "post-1.jpg"), environemen
 try? PostNetworkManager().network.download(endPoint) { (data, response, _) in
     if let data = data {
         do {
-            print("data: ", data)
+            print("data 3: ", data)
         } catch let error {
-            print("error:", error)
+            print("error 3:", error)
         }
     }
 }
 
+let allEndPoint2 = PostRouter.init(.all(page: 1), environement: .develop)
+let result: (Response<Data>?, Error?)? = try? PostNetworkManager().network.syncResponse(allEndPoint2)
+do {
+    let json = try JSONSerialization.jsonObject(with: result!.0!.data!, options: .mutableContainers)
+    print("sync json 4:", json)
+} catch let error {
+    print("sync error 4:", error)
+}
