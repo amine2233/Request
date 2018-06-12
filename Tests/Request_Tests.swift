@@ -10,7 +10,6 @@ import XCTest
 
 class Request_Tests: XCTestCase {
     
-    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -22,7 +21,6 @@ class Request_Tests: XCTestCase {
     }
     
     func testExample() {
-        
     }
     
     func testPerformanceExample() {

@@ -18,9 +18,9 @@ extension NSImageView {
      - Parameter placeholder: Use placeholder picture if download failed or if can't get a picture data
      - Parameter activity: Use for show downloading progress
     */
-    public func image<T: EndPointType>(network: NetworkRouter<T>, router: T, placeholder: NSImage? = nil, activity: NSProgressIndicator? = nil) {
+    public func image<T: EndPointType>(network: NetworkRouter<T>, router: T, placeholder: NSImage? = nil, activity: NSProgressIndicator? = nil) throws {
         activity?.startAnimation(self)
-        network.download(router) { (data, response, error) in
+        try network.download(router) { (data, response, error) in
             DispatchQueue.main.async {
                 activity?.stopAnimation(self)
                 if error != nil {

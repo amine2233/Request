@@ -23,6 +23,8 @@ public protocol NetworkEnvironmentProtocol {
     var baseUrl: String { get }
     /// If secure https or not
     var isHTTPS: Bool { get }
+    /// Scheme (http or https)
+    //var scheme: Bool { get }
 }
 
 extension NetworkEnvironmentProtocol {

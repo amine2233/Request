@@ -15,9 +15,10 @@ import Foundation
  - yml: Use yml type format for request url
  */
 public enum HTTPFormat: String {
-    case json = "json"
-    case xml = "xml"
-    case yml = "yml"
+    case json   = "json"
+    case xml    = "xml"
+    case yml    = "yml"
+    case html   = "html"
 }
 
 /// Endpoint type configuration

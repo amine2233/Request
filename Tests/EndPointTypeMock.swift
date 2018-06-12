@@ -1,5 +1,11 @@
-//: Playground - noun: a place where people can play
+//
+//  EndPointTypeMock.swift
+//  Request
+//
+//  Created by Amine Bensalah on 10/06/2018.
+//
 
+import Foundation
 import Request
 
 public enum Environement: String, NetworkEnvironmentProtocol {
@@ -9,9 +15,9 @@ public enum Environement: String, NetworkEnvironmentProtocol {
     public var apiBaseURL: String {
         switch self {
         case .develop:
-            return "localhost/~amine/web-welovemac/public/api/"
+            return "welovemac.local/api/"
         case .production:
-            return "welovemac.fr/api/"
+            return "welovemac.local/api/"
         }
     }
     
@@ -40,7 +46,7 @@ public enum Environement: String, NetworkEnvironmentProtocol {
     public var debug: Bool  {
         switch self {
         case .develop:
-            return false
+            return true
         case .production:
             return false
         }
@@ -49,9 +55,9 @@ public enum Environement: String, NetworkEnvironmentProtocol {
     public var baseUrl: String  {
         switch self {
         case .develop:
-            return "localhost/~amine/web-welovemac/public"
+            return "welovemac.local"
         case .production:
-            return "welovemac.fr"
+            return "welovemac.local"
         }
     }
     
@@ -68,6 +74,7 @@ public enum Environement: String, NetworkEnvironmentProtocol {
 enum PostEndPoint {
     case all(page: Int)
     case get(slug: String)
+    case search(query: String)
     case thumb(image: String)
     case picture(image: String)
 }
@@ -93,6 +100,8 @@ struct PostRouter: EndPointType {
             return "posts"
         case .get(let slug):
             return "posts/\(slug)"
+        case .search:
+            return "search"
         case .thumb(let image):
             return "uploads/images/posts_thumb/\(image)"
         case .picture(let image):
@@ -105,7 +114,12 @@ struct PostRouter: EndPointType {
     }
     
     public var httpMethod: HttpMethod {
-        return .get
+        switch endPoint {
+        case .search:
+            return .post
+        default:
+            return .get
+        }
     }
     
     public var task: HTTPTask {
@@ -125,6 +139,8 @@ struct PostRouter: EndPointType {
         switch endPoint {
         case .all(let page):
             return ["page": page]
+        case .search(let query):
+            return ["query": query]
         default:
             return nil
         }
@@ -152,6 +168,8 @@ struct PostRouter: EndPointType {
             return "picture"
         case .thumb:
             return "thumb"
+        case .search:
+            return "search"
         }
     }
     
@@ -165,6 +183,8 @@ struct PostRouter: EndPointType {
             return "\(self.name) post picture with slug: \(image)"
         case .thumb(let image):
             return "\(self.name) post thumb with slug: \(image)"
+        case .search(let query):
+            return "\(self.name) search with query: \(query)"
         }
     }
     
@@ -172,53 +192,3 @@ struct PostRouter: EndPointType {
         return self.environement.debug
     }
 }
-
-final class PostNetworkManager: NetworkManagerProtocol {
-    private(set) var network: NetworkRouter<PostRouter>
-    
-    init(logger: NetworkLoggerProtocol) {
-        self.network = NetworkRouter<PostRouter>(logger: logger)
-    }
-
-    public init(logger: NetworkLogger = NetworkLogger()) {
-        self.network = NetworkRouter<PostRouter>(logger: logger)
-    }
-}
-
-let allEndPoint = PostRouter.init(.all(page: 1), environement: .develop)
-try? PostNetworkManager().network.request(allEndPoint) { (data, response, _) in
-    if let data = data {
-        do {
-            print("data: ", data)
-            let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-            print("json: ", jsonData)
-        } catch {
-            print("error:", error)
-        }
-    }
-}
-
-let endPoint = PostRouter.init(.get(slug: "post-1"), environement: .develop)
-try? PostNetworkManager().network.request(endPoint) { (data, response, _) in
-    if let data = data {
-        do {
-            print("data: ", data)
-            let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-            print("json: ", jsonData)
-        } catch let error {
-            print("error:", error)
-        }
-    }
-}
-
-let pictureEndPoint = PostRouter.init(.picture(image: "post-1.jpg"), environement: .develop)
-try? PostNetworkManager().network.download(endPoint) { (data, response, _) in
-    if let data = data {
-        do {
-            print("data: ", data)
-        } catch let error {
-            print("error:", error)
-        }
-    }
-}
-
