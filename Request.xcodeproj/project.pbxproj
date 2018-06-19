@@ -165,6 +165,7 @@
 		679131612085F07600E815DD /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		679131662085F91500E815DD /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
 		679132482086BBE900E815DD /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
+		67E6C0F820D7870200FA7B4E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		67F5A8FE208A41E500F6CF81 /* NSImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImageView.swift; sourceTree = "<group>"; };
 		67F5A902208B21B400F6CF81 /* WKImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKImageViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -276,6 +277,7 @@
 				679131102084F3CA00E815DD /* Service */,
 				679130D62084EC3F00E815DD /* Info.plist */,
 				679130D12084EC3600E815DD /* Request.h */,
+				67E6C0F820D7870200FA7B4E /* README.md */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -810,6 +812,7 @@
 		6791306B2084EAE000E815DD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -844,6 +847,7 @@
 		6791306C2084EAE000E815DD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
