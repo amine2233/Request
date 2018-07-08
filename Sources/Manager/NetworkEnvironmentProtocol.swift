@@ -24,31 +24,30 @@ public protocol NetworkEnvironmentProtocol {
     /// If secure https or not
     var isHTTPS: Bool { get }
     /// Scheme (http or https)
-    //var scheme: Bool { get }
+    // var scheme: Bool { get }
 }
 
 extension NetworkEnvironmentProtocol {
-    
     /// Absolute api with adding https or http if it required
     public var apiAbsoluteURL: String {
-        if self.apiBaseURL.hasPrefix("http") {
-            return self.apiBaseURL
+        if apiBaseURL.hasPrefix("http") {
+            return apiBaseURL
         } else {
-            return "\(isHTTPS ? "https": "http")://\(self.apiBaseURL)"
+            return "\(isHTTPS ? "https" : "http")://\(apiBaseURL)"
         }
     }
-    
+
     /// Absolute website url
     public var absoluteURL: String {
-        if self.baseUrl.hasPrefix("http") {
-            return self.apiBaseURL
+        if baseUrl.hasPrefix("http") {
+            return apiBaseURL
         } else {
-            return "\(isHTTPS ? "https": "http")://\(self.apiBaseURL)"
+            return "\(isHTTPS ? "https" : "http")://\(apiBaseURL)"
         }
     }
-    
+
     /// Description of environement
     public var description: String {
-        return "Environment: \(self.name)"
+        return "Environment: \(name)"
     }
 }

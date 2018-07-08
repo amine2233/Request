@@ -9,9 +9,9 @@ import Foundation
 import Request
 
 public enum Environement: String, NetworkEnvironmentProtocol {
-    case develop = "develop"
-    case production = "production"
-    
+    case develop
+    case production
+
     public var apiBaseURL: String {
         switch self {
         case .develop:
@@ -20,8 +20,8 @@ public enum Environement: String, NetworkEnvironmentProtocol {
             return "welovemac.local/api/"
         }
     }
-    
-    public var apiClientToken: String?  {
+
+    public var apiClientToken: String? {
         switch self {
         case .develop:
             return ""
@@ -29,8 +29,8 @@ public enum Environement: String, NetworkEnvironmentProtocol {
             return ""
         }
     }
-    
-    public var apiClientSecret: String?  {
+
+    public var apiClientSecret: String? {
         switch self {
         case .develop:
             return ""
@@ -38,12 +38,12 @@ public enum Environement: String, NetworkEnvironmentProtocol {
             return ""
         }
     }
-    
-    public var name: String  {
-        return self.rawValue
+
+    public var name: String {
+        return rawValue
     }
-    
-    public var debug: Bool  {
+
+    public var debug: Bool {
         switch self {
         case .develop:
             return true
@@ -51,8 +51,8 @@ public enum Environement: String, NetworkEnvironmentProtocol {
             return false
         }
     }
-    
-    public var baseUrl: String  {
+
+    public var baseUrl: String {
         switch self {
         case .develop:
             return "welovemac.local"
@@ -60,8 +60,8 @@ public enum Environement: String, NetworkEnvironmentProtocol {
             return "welovemac.local"
         }
     }
-    
-    public var isHTTPS: Bool  {
+
+    public var isHTTPS: Bool {
         switch self {
         case .develop:
             return false
@@ -80,39 +80,38 @@ enum PostEndPoint {
 }
 
 struct PostRouter: EndPointType {
-    
     var endPoint: PostEndPoint
     var environement: Environement
-    
+
     init(_ endpoint: PostEndPoint, environement: Environement) {
-        self.endPoint = endpoint
+        endPoint = endpoint
         self.environement = environement
     }
-    
+
     public var baseURL: URL {
         guard let url = URL(string: self.environement.apiAbsoluteURL) else { fatalError("baseURL could not be configured.") }
         return url
     }
-    
+
     public var path: String {
         switch endPoint {
         case .all:
             return "posts"
-        case .get(let slug):
+        case let .get(slug):
             return "posts/\(slug)"
         case .search:
             return "search"
-        case .thumb(let image):
+        case let .thumb(image):
             return "uploads/images/posts_thumb/\(image)"
-        case .picture(let image):
+        case let .picture(image):
             return "uploads/images/posts/\(image)"
         }
     }
-    
+
     public var format: HTTPFormat {
         return .json
     }
-    
+
     public var httpMethod: HttpMethod {
         switch endPoint {
         case .search:
@@ -121,7 +120,7 @@ struct PostRouter: EndPointType {
             return .get
         }
     }
-    
+
     public var task: HTTPTask {
         switch endPoint {
         case .thumb, .picture:
@@ -130,34 +129,34 @@ struct PostRouter: EndPointType {
             return .request
         }
     }
-    
+
     public var headers: HTTPHeaders? {
         return nil
     }
-    
+
     public var queriesParameters: Parameters? {
         switch endPoint {
-        case .all(let page):
+        case let .all(page):
             return ["page": page]
-        case .search(let query):
+        case let .search(query):
             return ["query": query]
         default:
             return nil
         }
     }
-    
+
     public var bodyParameters: Parameters? {
         return nil
     }
-    
+
     public var urlParameters: Parameters? {
         return nil
     }
-    
+
     public var encoder: ParameterEncoder? {
         return nil
     }
-    
+
     public var name: String {
         switch endPoint {
         case .all:
@@ -172,23 +171,23 @@ struct PostRouter: EndPointType {
             return "search"
         }
     }
-    
+
     public var dubugDescription: String {
         switch endPoint {
-        case .all(let page):
-            return "\(self.name) post at page: \(page)"
-        case .get(let slug):
-            return "\(self.name) post with slug: \(slug)"
-        case .picture(let image):
-            return "\(self.name) post picture with slug: \(image)"
-        case .thumb(let image):
-            return "\(self.name) post thumb with slug: \(image)"
-        case .search(let query):
-            return "\(self.name) search with query: \(query)"
+        case let .all(page):
+            return "\(name) post at page: \(page)"
+        case let .get(slug):
+            return "\(name) post with slug: \(slug)"
+        case let .picture(image):
+            return "\(name) post picture with slug: \(image)"
+        case let .thumb(image):
+            return "\(name) post thumb with slug: \(image)"
+        case let .search(query):
+            return "\(name) search with query: \(query)"
         }
     }
-    
+
     public var isDebug: Bool {
-        return self.environement.debug
+        return environement.debug
     }
 }

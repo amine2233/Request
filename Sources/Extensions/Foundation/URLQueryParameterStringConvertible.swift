@@ -1,25 +1,17 @@
-//
-//  DictionaryExtension.swift
-//  VIPER-A
-//
-//  Created by Amine Bensalah on 28/02/2018.
-//  Copyright © 2018 Amine Bensalah. All rights reserved.
-//
-
 import Foundation
 
 protocol URLQueryParameterStringConvertible {
-    var queryParameters: String {get}
+    var queryParameters: String { get }
 }
 
-extension Dictionary : URLQueryParameterStringConvertible {
+extension Dictionary: URLQueryParameterStringConvertible {
     /**
      This computed property returns a query parameters string from the given NSDictionary.
-     
-        For example,
-        if the input is @{@"day":@"Tuesday", @"month":@"January"},
-        the output string will be @"day=Tuesday&month=January".
-     
+
+     For example,
+     if the input is @{@"day":@"Tuesday", @"month":@"January"},
+     the output string will be @"day=Tuesday&month=January".
+
      - Returns: The computed parameters string.
      */
     var queryParameters: String {
@@ -32,19 +24,18 @@ extension Dictionary : URLQueryParameterStringConvertible {
         }
         return parts.joined(separator: "&")
     }
-    
 }
 
 extension URL {
     /**
      Creates a new URL by adding the given query parameters.
-     
+
      - Parameter parametersDictionary: The query parameter dictionary to add.
-     
+
      - Return A new URL.
      */
-    func appendingQueryParameters(_ parametersDictionary : [String:String]) -> URL {
-        let URLString : String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
+    func appendingQueryParameters(_ parametersDictionary: [String: String]) -> URL {
+        let URLString: String = String(format: "%@?%@", absoluteString, parametersDictionary.queryParameters)
         return URL(string: URLString)!
     }
 }

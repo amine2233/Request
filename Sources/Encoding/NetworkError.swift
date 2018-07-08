@@ -9,7 +9,7 @@ import Foundation
 
 /**
  Network error for construct request
- 
+
  - parametersNil: Error when parameters is nil
  - encodingFailed: Error when failed encoding
  - missingURL: Error when url is nil

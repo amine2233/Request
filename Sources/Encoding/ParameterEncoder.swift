@@ -8,7 +8,7 @@
 import Foundation
 
 /// Request Parameters for query and body request
-public typealias Parameters = [String:Any]
+public typealias Parameters = [String: Any]
 
 /// Parameter Encoder Protocol for encode body in request
 public protocol ParameterEncoderProtocol {
@@ -17,23 +17,23 @@ public protocol ParameterEncoderProtocol {
 
 /**
  Network error for construct request
- 
+
  - urlEncoding: Data url encoding type
  - jsonEncoding: Data json encoding type
  */
 public enum ParameterEncoder {
     case urlEncoding
     case jsonEncoding
-    
+
     /**
      Encoding body request
-     
+
      - Parameter urlRequest: The URLRequest construct
      - Parameter bodyParameters: the parameters we will add in request for send
      */
     public func encode(urlRequest: inout URLRequest, bodyParameters: Parameters?) throws {
         guard let bodyParameters = bodyParameters else { return }
-        
+
         do {
             switch self {
             case .urlEncoding:

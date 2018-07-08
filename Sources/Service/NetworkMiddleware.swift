@@ -8,7 +8,7 @@
 import Foundation
 
 /// The next action
-public typealias Next = ( Any... ) -> Swift.Void
+public typealias Next = (Any...) -> Swift.Void
 
 /// The network Middleware
 public typealias NetworkMiddleware = (EndPointType, @escaping NetworkRouterCompletion, @escaping Next) -> Swift.Void

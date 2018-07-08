@@ -9,13 +9,12 @@ import Foundation
 
 /// JSON request encodeur
 public struct JSONParameterEncoder: ParameterEncoderProtocol {
-    
     /**
      Encoding body request
-     
+
      - Parameter urlRequest: The URLRequest construct
      - Parameter bodyParameters: the parameters we will add in request for send
-     
+
      - Throws: `NetworkError.parametersNil` parameters is nil when try to construct json body
      - Throws: `NetworkError.encodingFailed` failed encoding json
      */

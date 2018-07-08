@@ -1,6 +1,11 @@
 // https://www.invasivecode.com/weblog/network-reachability-in-swift/
 
+#if canImport(Foundation)
 import Foundation
+
+#if canImport(SystemConfiguration)
+#if !os(macOS)
+#if !os(watchOS)
 import SystemConfiguration
 
 public let kReachabilityDidChangeNotificationName = "ReachabilityDidChangeNotification"
@@ -35,7 +40,6 @@ public enum ReachabilityStatus {
  * }
  */
 public class ReachabilityService {
-    
     private var networkReachability: SCNetworkReachability?
     private var notifying: Bool = false
     private var flags: SCNetworkReachabilityFlags {
@@ -46,7 +50,7 @@ public class ReachabilityService {
             return []
         }
     }
-    
+
     public var currentReachabilityStatus: ReachabilityStatus {
         if flags.contains(.reachable) == false {
             // The target host is not reachable.
@@ -57,14 +61,14 @@ public class ReachabilityService {
         } else if flags.contains(.connectionRequired) == false {
             // If the target host is reachable and no connection is required then we'll assume that you're on Wi-Fi...
             return .wifiReachable
-        } else if (flags.contains(.connectionOnDemand) == true || flags.contains(.connectionOnTraffic) == true ) && flags.contains(.interventionRequired) == false {
+        } else if (flags.contains(.connectionOnDemand) == true || flags.contains(.connectionOnTraffic) == true) && flags.contains(.interventionRequired) == false {
             // The connection is on-demand (or on-traffic) if the calling application is using the CFSocketStream or higher APIs and no [user] intervention is needed
             return .wifiReachable
         } else {
             return .notReachable
         }
     }
-    
+
     public var isReachability: Bool {
         switch currentReachabilityStatus {
         case .notReachable:
@@ -73,55 +77,55 @@ public class ReachabilityService {
             return true
         }
     }
-    
+
     public init?(hostName: String) {
         networkReachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, (hostName as NSString).utf8String!)
         if networkReachability == nil {
             return nil
         }
     }
-    
+
     public init?(hostAddress: sockaddr_in) {
         var address = hostAddress
-        
+
         guard let defaultRouteReachability = withUnsafePointer(to: &address, { $0.withMemoryRebound(to: sockaddr.self, capacity: 1, {
             SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, $0) })
         }) else {
             return nil
         }
-        
+
         networkReachability = defaultRouteReachability
         if networkReachability == nil {
             return nil
         }
     }
-    
+
     public static func networkReachabilityForInternetConnection() -> ReachabilityService? {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         return ReachabilityService(hostAddress: zeroAddress)
     }
-    
+
     public static func networkReachabilityForLocalWiFi() -> ReachabilityService? {
         var localWifiAddress = sockaddr_in()
         localWifiAddress.sin_len = UInt8(MemoryLayout.size(ofValue: localWifiAddress))
         localWifiAddress.sin_family = sa_family_t(AF_INET)
         // IN_LINKLOCALNETNUM is defined in <netinet/in.h> as 169.254.0.0 (0xA9FE0000).
-        localWifiAddress.sin_addr.s_addr = 0xA9FE0000
+        localWifiAddress.sin_addr.s_addr = 0xA9FE_0000
         return ReachabilityService(hostAddress: localWifiAddress)
     }
-    
+
     @discardableResult
     public func start() -> Bool {
         guard notifying == false else {
             return false
         }
-        
+
         var context = SCNetworkReachabilityContext()
         context.info = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        
-        guard let reachability = networkReachability, SCNetworkReachabilitySetCallback(reachability, { (_, _, info) in
+
+        guard let reachability = networkReachability, SCNetworkReachabilitySetCallback(reachability, { _, _, info in
             if let currentInfo = info {
                 let infoObject = Unmanaged<AnyObject>.fromOpaque(currentInfo).takeUnretainedValue()
                 if infoObject is ReachabilityService {
@@ -130,22 +134,29 @@ public class ReachabilityService {
                 }
             }
         }, &context) == true else { return false }
-        
+
         guard SCNetworkReachabilityScheduleWithRunLoop(reachability, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue) == true else { return false }
-        
+
         notifying = true
         return notifying
     }
-    
+
     public func stop() {
         if let reachability = networkReachability, notifying == true {
             SCNetworkReachabilityUnscheduleFromRunLoop(reachability, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode as! CFString)
             notifying = false
         }
     }
-    
+
     deinit {
         stop()
         debugPrint("ReachabilityService")
     }
 }
+#endif
+
+#endif
+
+#endif
+
+#endif

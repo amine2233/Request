@@ -1,29 +1,22 @@
-//
-//  EndPointType.swift
-//  Request iOS
-//
-//  Created by Amine Bensalah on 16/04/2018.
-//
-
+#if canImport(Foundation)
 import Foundation
 
 /**
  HTTP format type
- 
+
  - json: Use json type format for request url
  - xml: Use xml type format for request url
  - yml: Use yml type format for request url
  */
 public enum HTTPFormat: String {
-    case json   = "json"
-    case xml    = "xml"
-    case yml    = "yml"
-    case html   = "html"
+    case json
+    case xml
+    case yml
+    case html
 }
 
 /// Endpoint type configuration
 public protocol EndPointType {
-    
     /// Request base url
     var baseURL: URL { get }
     /// Path request
@@ -57,9 +50,10 @@ extension EndPointType {
     var dubugDescription: String {
         return ""
     }
-    
+
     /// Debug mode for request
     var isDebug: Bool {
         return false
     }
 }
+#endif

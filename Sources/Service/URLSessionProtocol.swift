@@ -8,9 +8,8 @@
 import Foundation
 
 public protocol URLSessionDataTaskProtocol {
-    
     func resume()
-    
+
     func cancel()
 }
 
@@ -25,28 +24,27 @@ public protocol URLSessionProtocol {
      * return URLSessionDataTask
      */
     func dataTask(request: URLRequest, completionHandler: @escaping NetworkCompletion) -> URLSessionDataTaskProtocol
-        
+
     /*
      * upload convenience method.
      * return URLSessionUploadTask
      */
     func uploadTask(request: URLRequest, from bodyData: Data?, completionHandler: @escaping NetworkCompletion) -> URLSessionDataTaskProtocol
-    
+
     /*
      * Send asynchronous request
      *
      */
-    func sendSynchronousRequest( request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol
+    func sendSynchronousRequest(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol
 }
 
 extension URLSessionDataTask: URLSessionDataTaskProtocol {}
 
 extension URLSession: URLSessionProtocol {
-    
     public func dataTask(request: URLRequest, completionHandler: @escaping NetworkCompletion) -> URLSessionDataTaskProtocol {
         return dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTaskProtocol
     }
-    
+
     public func uploadTask(request: URLRequest, from bodyData: Data?, completionHandler: @escaping NetworkCompletion) -> URLSessionDataTaskProtocol {
         return uploadTask(with: request, from: bodyData, completionHandler: completionHandler)
     }
@@ -55,10 +53,9 @@ extension URLSession: URLSessionProtocol {
 /// Extension of the NSURLSession that blocks the data task with semaphore, so we can perform
 /// a sync request.
 extension URLSession {
-    
-    public func sendSynchronousRequest( request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
+    public func sendSynchronousRequest(request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
         let semaphore = DispatchSemaphore(value: 0)
-        let task = self.dataTask(with: request) { data, response, error in
+        let task = dataTask(with: request) { data, response, error in
             completionHandler(data, response, error)
             semaphore.signal()
         }

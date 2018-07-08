@@ -9,7 +9,7 @@ import Foundation
 
 /**
  HTTP method type
- 
+
  - get: GET method type for request
  - post: POST method type for request
  - put: PUT method type for request

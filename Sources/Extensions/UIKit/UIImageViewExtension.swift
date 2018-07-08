@@ -1,18 +1,16 @@
-//
-//  UIImageViewExtension.swift
-//  Request iOS
-//
-//  Created by Amine Bensalah on 19/04/2018.
-//
-
+#if canImport(UIKit)
 import UIKit
+import UIKit.UIImage
+import UIKit.UIImageView
+import UIKit.UIActivityIndicatorView
 
+#if !os(watchOS)
 // MARK: NetworkRouter UIImageView
+
 public extension UIImageView {
-    
     /**
      Request a new Image for showing in UIImageView
-     
+
      - Parameter network: Use the appropriete network for download picture
      - Parameter router: Use the appropriete router for injected in network to set all properties to download picture
      - Parameter placeholder: Use placeholder picture if download failed or if can't get a picture data
@@ -20,7 +18,7 @@ public extension UIImageView {
      */
     public func image<T: EndPointType>(network: NetworkRouter<T>, router: T, placeholder: UIImage? = nil, activity: UIActivityIndicatorView? = nil) throws {
         activity?.startAnimating()
-        try network.download(router) { (data, response, error) in
+        try network.download(router) { data, _, error in
             DispatchQueue.main.async {
                 activity?.stopAnimating()
                 if error != nil {
@@ -31,6 +29,9 @@ public extension UIImageView {
                     self.image = placeholder
                 }
             }
-        }        
+        }
     }
 }
+#endif
+
+#endif
