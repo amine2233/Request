@@ -18,7 +18,7 @@ public protocol NetworkLoggerProtocol {
      - Returns: The NewtorkLoggerProtocol for chaining loging
      */
     @discardableResult
-    func log(route: EndPointType, request: URLRequest) -> Self
+    func log(route: RequestProtocol, request: URLRequest) -> Self
 
     /**
      Network logger response
@@ -30,7 +30,7 @@ public protocol NetworkLoggerProtocol {
      - Returns: The NewtorkLoggerProtocol for chaining loging
      */
     @discardableResult
-    func log(route: EndPointType, response: URLResponse?, data: Data?, error: Error?) -> Self
+    func log(route: RequestProtocol, response: URLResponse?, data: Data?, error: Error?) -> Self
 
     /**
      Network logger url & body response
@@ -42,7 +42,7 @@ public protocol NetworkLoggerProtocol {
      - Returns: The NewtorkLoggerProtocol for chaining loging
      */
     @discardableResult
-    func log(route: EndPointType, response: HTTPURLResponse?, data: Data?, error: Error?) -> Self
+    func log(route: RequestProtocol, response: HTTPURLResponse?, data: Data?, error: Error?) -> Self
 
     /**
      Network logger url & object response
@@ -55,7 +55,7 @@ public protocol NetworkLoggerProtocol {
      - Returns: The NewtorkLoggerProtocol for chaining loging
      */
     @discardableResult
-    func log<T: ResponseProtocol>(route: EndPointType, response: HTTPURLResponse?, info: T?, error: Error?) -> Self
+    func log<T: ResponseProtocol>(route: RequestProtocol, response: HTTPURLResponse?, info: T?, error: Error?) -> Self
 }
 
 /// The standard network logger
@@ -64,7 +64,7 @@ public final class NetworkLogger: NetworkLoggerProtocol {
     public init() {}
 
     @discardableResult
-    public func log(route: EndPointType, request: URLRequest) -> Self {
+    public func log(route: RequestProtocol, request: URLRequest) -> Self {
         print("\n******************* 🔥 BEGIN Request: \(route.name) *******************")
         print("- - - - - - - - - - Detail: \(route.dubugDescription) - - - - - - - - - -")
         defer { print("******************* 📦 END Request: \(route.name) *******************\n") }
@@ -97,7 +97,7 @@ public final class NetworkLogger: NetworkLoggerProtocol {
     }
 
     @discardableResult
-    public func log(route: EndPointType, response: URLResponse?, data: Data?, error: Error?) -> Self {
+    public func log(route: RequestProtocol, response: URLResponse?, data: Data?, error: Error?) -> Self {
         print("******************* ✅ BEGIN Response: \(route.name) *******************")
         print("- - - - - - - - - - Detail: \(route.dubugDescription) - - - - - - - - - -")
         defer { print("******************* 📦 END Response: \(route.name) *******************\n") }
@@ -131,7 +131,7 @@ public final class NetworkLogger: NetworkLoggerProtocol {
     }
 
     @discardableResult
-    public func log(route: EndPointType, response: HTTPURLResponse?, data: Data?, error: Error?) -> Self {
+    public func log(route: RequestProtocol, response: HTTPURLResponse?, data: Data?, error: Error?) -> Self {
         print("\n******************* ✅ BEGIN Response: \(route.name) *******************")
         print("- - - - - - - - - - Detail: \(route.dubugDescription) - - - - - - - - - -")
         defer { print("******************* 📦 END Response: \(route.name) [\(response?.statusCode ?? 0)] *******************\n") }
@@ -171,7 +171,7 @@ public final class NetworkLogger: NetworkLoggerProtocol {
         return self
     }
 
-    public func log<T: ResponseProtocol>(route: EndPointType, response: HTTPURLResponse?, info: T?, error: Error?) -> Self {
+    public func log<T: ResponseProtocol>(route: RequestProtocol, response: HTTPURLResponse?, info: T?, error: Error?) -> Self {
         print("\n******************* ✅ BEGIN Response: \(route.name) *******************")
         print("- - - - - - - - - - Detail: \(route.dubugDescription) - - - - - - - - - -")
         defer { print("******************* 📦 END Response: \(route.name) [\(response?.statusCode ?? 0)] *******************\n") }

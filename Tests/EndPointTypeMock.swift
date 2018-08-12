@@ -79,7 +79,7 @@ enum PostEndPoint {
     case picture(image: String)
 }
 
-struct PostRouter: EndPointType {
+struct PostRouter: RequestProtocol {
     var endPoint: PostEndPoint
     var environement: Environement
 

@@ -15,7 +15,7 @@ public typealias NetworkRouterResponseCompletion = (Response<Data>?, Error?) -> 
 /// Network router protocol, must all network router implement this protocol
 public protocol NetworkRouterProtocol {
     /// Endpoint type
-    associatedtype EndPoint: EndPointType
+    associatedtype Request: RequestProtocol
 
     /// Logger protocol to personalize request & response log
     var logger: NetworkLoggerProtocol? { get }
@@ -26,7 +26,7 @@ public protocol NetworkRouterProtocol {
      - Parameter router: The endpoint we will use for request
      - Parameter completion: completion for request method to get server response
      */
-    func request(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) throws
+    func request(_ router: Request, completion: @escaping NetworkRouterCompletion) throws
 
     /**
      Response request method
@@ -34,7 +34,7 @@ public protocol NetworkRouterProtocol {
      - Parameter router: The endpoint we will use for request
      - Parameter completion: completion for request method to get server response
      */
-    func response(_ router: EndPoint, completion: @escaping NetworkRouterResponseCompletion) throws
+    func response(_ router: Request, completion: @escaping NetworkRouterResponseCompletion) throws
 
     /**
      Json request method
@@ -43,7 +43,7 @@ public protocol NetworkRouterProtocol {
      - Parameter type: The Codable type we will recive
      - Parameter completion: completion for request method to get server response
      */
-    func jsonRequest<T: Codable>(_ router: EndPoint, completion: @escaping ((_ data: T?, _ response: HTTPURLResponse?, _ error: Error?) -> Swift.Void)) throws
+    func jsonRequest<T: Codable>(_ router: Request, completion: @escaping ((_ data: T?, _ response: HTTPURLResponse?, _ error: Error?) -> Swift.Void)) throws
 
     /**
      New json request method with response object
@@ -52,7 +52,7 @@ public protocol NetworkRouterProtocol {
      - Parameter type: The Codable type we will recive
      - Parameter completion: completion for request method to get server response
      */
-    func jsonResponse<T: Codable>(_ router: EndPoint, completion: @escaping ((Response<T>?, Error?) -> Swift.Void)) throws
+    func jsonResponse<T: Codable>(_ router: Request, completion: @escaping ((Response<T>?, Error?) -> Swift.Void)) throws
 
     /**
      Download method
@@ -60,7 +60,7 @@ public protocol NetworkRouterProtocol {
      - Parameter router: The endpoint we will use for download data
      - Parameter completion: completion for request method to get server response
      */
-    func download(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) throws
+    func download(_ router: Request, completion: @escaping NetworkRouterCompletion) throws
 
     /**
      Download method with url
@@ -77,7 +77,7 @@ public protocol NetworkRouterProtocol {
      - Parameter from: The data we will upload to server
      - Parameter completion: completion for request method to get server response
      */
-    func upload(_ router: EndPoint, from: Data?, completion: @escaping NetworkRouterCompletion) throws
+    func upload(_ router: Request, from: Data?, completion: @escaping NetworkRouterCompletion) throws
 
     /**
      Sync response request method
@@ -85,7 +85,7 @@ public protocol NetworkRouterProtocol {
      - Parameter router: The endpoint we will use for request
      - Returns tuples: Response and Error for request
      */
-    func syncResponse<T: Codable>(_ router: EndPoint) throws -> (Response<T>?, Error?)
+    func syncResponse<T: Codable>(_ router: Request) throws -> (Response<T>?, Error?)
 
     /// Resume request task
     func resume()
@@ -104,7 +104,7 @@ extension NetworkRouterProtocol {
      - Throws: `NetworkError.encodingFailed` failed encoding json
      - Throws: `NetworkError.missingURL` can't build url
      */
-    internal func buildRequest(from route: EndPoint) throws -> URLRequest {
+    internal func buildRequest(from route: Request) throws -> URLRequest {
         var request = URLRequest(url: route.baseURL.appendingPathComponent(route.path), cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
 
         request.setValue("application/\(route.format)", forHTTPHeaderField: "Content-Type")

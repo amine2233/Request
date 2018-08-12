@@ -2,7 +2,7 @@
 import Foundation
 
 /// The Network Router use it for request endpoint type
-public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
+public class NetworkRouter<Reqest: RequestProtocol>: NetworkRouterProtocol {
     /// The url session task
     private var task: URLSessionDataTaskProtocol?
 
@@ -24,7 +24,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         self.logger = logger
     }
 
-    public func request(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) throws {
+    public func request(_ router: Reqest, completion: @escaping NetworkRouterCompletion) throws {
         let request = try buildRequest(from: router)
         task = session.dataTask(request: request, completionHandler: { data, response, error in
 
@@ -37,7 +37,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         resume()
     }
 
-    public func response(_ router: EndPoint, completion: @escaping NetworkRouterResponseCompletion) throws {
+    public func response(_ router: Reqest, completion: @escaping NetworkRouterResponseCompletion) throws {
         let request = try buildRequest(from: router)
         task = session.dataTask(request: request, completionHandler: { data, response, error in
 
@@ -52,7 +52,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         resume()
     }
 
-    public func jsonRequest<T: Codable>(_ router: EndPoint, completion: @escaping ((_ data: T?, _ response: HTTPURLResponse?, _ error: Error?) -> Swift.Void)) throws {
+    public func jsonRequest<T: Codable>(_ router: Reqest, completion: @escaping ((_ data: T?, _ response: HTTPURLResponse?, _ error: Error?) -> Swift.Void)) throws {
         let request = try buildRequest(from: router)
 
         task = session.dataTask(request: request) { data, response, error in
@@ -72,7 +72,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         resume()
     }
 
-    public func jsonResponse<T: Codable>(_ router: EndPoint, completion: @escaping ((Response<T>?, Error?) -> Swift.Void)) throws {
+    public func jsonResponse<T: Codable>(_ router: Reqest, completion: @escaping ((Response<T>?, Error?) -> Swift.Void)) throws {
         let request = try buildRequest(from: router)
         task = session.dataTask(request: request) { data, response, error in
 
@@ -95,7 +95,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         resume()
     }
 
-    public func download(_ router: EndPoint, completion: @escaping NetworkRouterCompletion) throws {
+    public func download(_ router: Reqest, completion: @escaping NetworkRouterCompletion) throws {
         let request = try buildRequest(from: router)
         task = session.dataTask(request: request, completionHandler: { data, response, error in
 
@@ -116,7 +116,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         resume()
     }
 
-    public func upload(_ router: EndPoint, from: Data?, completion: @escaping NetworkRouterCompletion) throws {
+    public func upload(_ router: Reqest, from: Data?, completion: @escaping NetworkRouterCompletion) throws {
         let request = try buildRequest(from: router)
         task = session.uploadTask(request: request, from: from, completionHandler: { data, response, error in
 
@@ -129,7 +129,7 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
         resume()
     }
 
-    public func syncResponse<T: Codable>(_ router: EndPoint) throws -> (Response<T>?, Error?) {
+    public func syncResponse<T: Codable>(_ router: Reqest) throws -> (Response<T>?, Error?) {
         let request = try buildRequest(from: router)
         var result: (Response<T>?, Error?) = (nil, nil)
         task = session.sendSynchronousRequest(request: request) { data, response, error in

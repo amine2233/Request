@@ -16,7 +16,7 @@ public enum HTTPFormat: String {
 }
 
 /// Endpoint type configuration
-public protocol EndPointType {
+public protocol RequestProtocol {
     /// Request base url
     var baseURL: URL { get }
     /// Path request
@@ -45,7 +45,7 @@ public protocol EndPointType {
     var isDebug: Bool { get }
 }
 
-extension EndPointType {
+extension RequestProtocol {
     /// Debug description request
     var dubugDescription: String {
         return ""

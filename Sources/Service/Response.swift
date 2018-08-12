@@ -68,7 +68,7 @@ public protocol ResponseProtocol {
     var statusCode: Int { get }
     var statusCodeType: StatusCode { get }
     var headerFields: [AnyHashable: Any] { get }
-    var endPoint: EndPointType { get }
+    var request: RequestProtocol { get }
 
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
@@ -82,7 +82,7 @@ public struct Response<T>: ResponseProtocol {
 
     public let statusCodeType: StatusCode
 
-    public let endPoint: EndPointType
+    public let request: RequestProtocol
 
     public let response: HTTPURLResponse?
 
@@ -92,15 +92,15 @@ public struct Response<T>: ResponseProtocol {
 
     public let headerFields: [AnyHashable: Any]
 
-    public init(with endPoint: EndPointType, urlResponse: URLResponse?) {
-        self.endPoint = endPoint
+    public init(with endPoint: RequestProtocol, urlResponse: URLResponse?) {
+        self.request = endPoint
         response = urlResponse as? HTTPURLResponse
         statusCode = response?.statusCode ?? 0
         headerFields = response?.allHeaderFields ?? [:]
         statusCodeType = StatusCode(statusCode: response?.statusCode ?? 0)
     }
 
-    public init<Model>(with endPoint: EndPointType, urlResponse: URLResponse?, data: Data?, completion: ((Data?) -> Model?)? = nil) {
+    public init<Model>(with endPoint: RequestProtocol, urlResponse: URLResponse?, data: Data?, completion: ((Data?) -> Model?)? = nil) {
         self.init(with: endPoint, urlResponse: urlResponse)
         handleData(data: data, completion: completion)
     }
@@ -115,7 +115,7 @@ public struct Response<T>: ResponseProtocol {
         }
     }
 
-    public init(with endPoint: EndPointType, urlResponse: URLResponse?, data: Data?, dataObject: T?) {
+    public init(with endPoint: RequestProtocol, urlResponse: URLResponse?, data: Data?, dataObject: T?) {
         self.init(with: endPoint, urlResponse: urlResponse)
         self.data = data
         self.dataObject = dataObject

@@ -18,10 +18,10 @@ import Foundation
  - head: HEAD method type for request
  */
 public enum HttpMethod: String {
-    case get = "GET"
-    case post = "POST"
-    case put = "PUT"
-    case patch = "PATCH"
+    case get    = "GET"
+    case post   = "POST"
+    case put    = "PUT"
+    case patch  = "PATCH"
     case delete = "DELETE"
-    case head = "HEAD"
+    case head   = "HEAD"
 }
