@@ -14,11 +14,4 @@ public protocol NetworkManagerProtocol {
 
     /// Network router for request or download or upload
     var network: NetworkRouter<EndPoint> { get }
-
-    /**
-     NetworkManager initiliser
-
-     - Parameter logger: NetworkLoggerProtocol for log all request
-     */
-    init(logger: NetworkLoggerProtocol)
 }
