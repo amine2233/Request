@@ -96,7 +96,7 @@ extension NetworkRouter {
         let request = try buildRequest(from: router)
         task = session.dataTask(request: request) {[context, logger]  data, response, error in
 
-            var result = Response<T>(with: router, urlResponse: response, context: context)
+            let result = Response<T>(with: router, urlResponse: response, context: context)
             
             if router.isDebug {
                 logger?.log(route: router, response: response as? HTTPURLResponse, data: data, error: error)
@@ -123,7 +123,7 @@ extension NetworkRouter {
         let request = try buildRequest(from: router)
         var result: (Response<T>?, Error?) = (nil, nil)
         task = session.sendSynchronousRequest(request: request) {[context, logger] data, response, error in
-            var dataResponse = Response<T>(with: router, urlResponse: response, context: context)
+            let dataResponse = Response<T>(with: router, urlResponse: response, context: context)
             
             if router.isDebug {
                 logger?.log(route: router, response: response as? HTTPURLResponse, data: data, error: error)

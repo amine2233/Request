@@ -14,7 +14,7 @@ extension NSImageView {
      */
     public func image<T: EndPointType>(network: NetworkRouter<T>, router: T, placeholder: NSImage? = nil, activity: NSProgressIndicator? = nil) throws {
         activity?.startAnimation(self)
-        try network.download(router) { data, _, error in
+        try network.download(router) { data, _, _, error in
             DispatchQueue.main.async {
                 activity?.stopAnimation(self)
                 if error != nil {
