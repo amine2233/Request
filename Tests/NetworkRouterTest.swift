@@ -29,7 +29,7 @@ class NetworkRouterTest: XCTestCase {
         XCTAssertFalse(dataTask.resumeWasCalled)
 
         let allEndPoint = PostRouter(.all(page: 1), environement: .develop)
-        try? networkRouter.request(allEndPoint) { _, _, _ in
+        try? networkRouter.request(allEndPoint) { _, _, _, _ in
             // return data
         }
 
@@ -85,7 +85,7 @@ class NetworkRouterTest: XCTestCase {
         XCTAssertFalse(dataTask.resumeWasCalled)
 
         let downloadEndPoint = PostRouter(.thumb(image: "thumb"), environement: .develop)
-        try? networkRouter.download(downloadEndPoint, completion: { _, _, _ in
+        try? networkRouter.download(downloadEndPoint, completion: { _, _, _, _ in
             // return data
         })
 
@@ -102,7 +102,7 @@ class NetworkRouterTest: XCTestCase {
             fatalError("URL can't be empty")
         }
 
-        networkRouter.download(url, completion: { _, _, _ in
+        networkRouter.download(url, completion: { _, _, _, _ in
             // return data
         })
 
@@ -117,7 +117,7 @@ class NetworkRouterTest: XCTestCase {
         XCTAssertFalse(dataTask.resumeWasCalled)
 
         let uploadEndPoint = PostRouter(.thumb(image: "thumb"), environement: .develop)
-        try? networkRouter.upload(uploadEndPoint, from: nil, completion: { _, _, _ in
+        try? networkRouter.upload(uploadEndPoint, from: nil, completion: { _, _, _, _ in
             // return data
         })
 
