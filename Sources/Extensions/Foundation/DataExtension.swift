@@ -19,3 +19,9 @@ extension Data {
         return try JSONSerialization.jsonObject(with: self, options: .mutableContainers)
     }
 }
+
+// https://medium.com/@andrea.prearo/working-with-codable-and-core-data-83983e77198e
+public extension CodingUserInfoKey {
+    // Helper property to retrieve the context
+    static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")
+}

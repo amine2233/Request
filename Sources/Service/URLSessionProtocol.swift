@@ -7,11 +7,19 @@
 
 import Foundation
 
+public protocol CoreDataContextProtocol {
+    func reset()
+    
+    func save() throws
+}
+
 public protocol URLSessionDataTaskProtocol {
     func resume()
 
     func cancel()
 }
+
+public typealias NetworkCompletion = (Data?, URLResponse?, Error?) -> Void
 
 public protocol URLSessionProtocol {
     /*

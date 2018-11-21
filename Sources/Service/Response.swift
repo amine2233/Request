@@ -62,7 +62,7 @@ extension StatusCode: CustomDebugStringConvertible {
     }
 }
 
-public protocol ResponseProtocol {
+public protocol ResponseProtocol: class {
     associatedtype DataModel
 
     var statusCode: Int { get }
@@ -73,9 +73,11 @@ public protocol ResponseProtocol {
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
     var dataObject: DataModel? { get }
+    
+    var context: CoreDataContextProtocol? { get }
 }
 
-public struct Response<T>: ResponseProtocol {
+public class Response<T>: ResponseProtocol {
     public typealias DataModel = T
 
     public let statusCode: Int
@@ -91,32 +93,35 @@ public struct Response<T>: ResponseProtocol {
     public var data: Data?
 
     public let headerFields: [AnyHashable: Any]
+    
+    public let context: CoreDataContextProtocol?
 
-    public init(with endPoint: EndPointType, urlResponse: URLResponse?) {
+    public init(with endPoint: EndPointType, urlResponse: URLResponse?, context: CoreDataContextProtocol?) {
         self.endPoint = endPoint
-        response = urlResponse as? HTTPURLResponse
-        statusCode = response?.statusCode ?? 0
-        headerFields = response?.allHeaderFields ?? [:]
-        statusCodeType = StatusCode(statusCode: response?.statusCode ?? 0)
+        self.response = urlResponse as? HTTPURLResponse
+        self.context = context
+        self.statusCode = response?.statusCode ?? 0
+        self.headerFields = response?.allHeaderFields ?? [:]
+        self.statusCodeType = StatusCode(statusCode: response?.statusCode ?? 0)
     }
 
-    public init<Model>(with endPoint: EndPointType, urlResponse: URLResponse?, data: Data?, completion: ((Data?) -> Model?)? = nil) {
-        self.init(with: endPoint, urlResponse: urlResponse)
+    public convenience init(with endPoint: EndPointType, urlResponse: URLResponse?, context: CoreDataContextProtocol?, data: Data?, completion: ((Data?) -> DataModel?)? = nil) {
+        self.init(with: endPoint, urlResponse: urlResponse, context: context)
         handleData(data: data, completion: completion)
     }
 
-    public mutating func handleData<Model>(data: Data?, completion: ((Data?) -> Model?)?) {
+    public func handleData(data: Data?, completion: ((Data?) -> DataModel?)?) {
         self.data = data
         switch statusCodeType {
-        case .ok:
-            dataObject = completion?(data) as? T
+        case .ok, .success:
+            dataObject = completion?(data)
         default:
-            self.data = nil
+            break
         }
     }
 
-    public init(with endPoint: EndPointType, urlResponse: URLResponse?, data: Data?, dataObject: T?) {
-        self.init(with: endPoint, urlResponse: urlResponse)
+    public convenience init(with endPoint: EndPointType, urlResponse: URLResponse?, context: CoreDataContextProtocol?, data: Data?, dataObject: DataModel?) {
+        self.init(with: endPoint, urlResponse: urlResponse, context: context)
         self.data = data
         self.dataObject = dataObject
     }

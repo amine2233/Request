@@ -18,7 +18,7 @@ public extension UIImageView {
      */
     public func image<T: EndPointType>(network: NetworkRouter<T>, router: T, placeholder: UIImage? = nil, activity: UIActivityIndicatorView? = nil) throws {
         activity?.startAnimating()
-        try network.download(router) { data, _, error in
+        try network.download(router) { data, _, _, error in
             DispatchQueue.main.async {
                 activity?.stopAnimating()
                 if error != nil {

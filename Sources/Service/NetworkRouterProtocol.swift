@@ -8,8 +8,7 @@
 import Foundation
 
 /// Network Router completion for response request
-public typealias NetworkCompletion = (Data?, URLResponse?, Error?) -> Void
-public typealias NetworkRouterCompletion = (Data?, HTTPURLResponse?, Error?) -> Swift.Void
+public typealias NetworkRouterCompletion = (Data?, HTTPURLResponse?, CoreDataContextProtocol?, Error?) -> Swift.Void
 public typealias NetworkRouterResponseCompletion = (Response<Data>?, Error?) -> Swift.Void
 
 /// Network router protocol, must all network router implement this protocol
