@@ -11,7 +11,7 @@ import WatchKit
 
 // MARK: NetworkRouter WKInterfaceImage
 
-public extension WKInterfaceImage {
+extension WKInterfaceImage {
     
 }
 #endif

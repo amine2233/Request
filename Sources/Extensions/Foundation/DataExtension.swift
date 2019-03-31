@@ -21,7 +21,7 @@ extension Data {
 }
 
 // https://medium.com/@andrea.prearo/working-with-codable-and-core-data-83983e77198e
-public extension CodingUserInfoKey {
+extension CodingUserInfoKey {
     // Helper property to retrieve the context
-    static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")
+    public static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")
 }
