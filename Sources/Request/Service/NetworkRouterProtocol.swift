@@ -9,7 +9,7 @@ import Foundation
 
 /// Network Router completion for response request
 public typealias NetworkRouterCompletion = (Data?, HTTPURLResponse?, CoreDataContextProtocol?, Error?) -> Swift.Void
-public typealias NetworkRouterResponseCompletion = (Response<Data>?, Error?) -> Swift.Void
+public typealias NetworkRouterResponseCompletion = (Result<Response<Data>, Error>) -> Swift.Void
 
 /// Network router protocol, must all network router implement this protocol
 public protocol NetworkRouterProtocol {
@@ -51,7 +51,7 @@ public protocol NetworkRouterProtocol {
      - Parameter type: The Codable type we will recive
      - Parameter completion: completion for request method to get server response
      */
-    func jsonResponse<T: Codable>(_ router: EndPoint, completion: @escaping ((Response<T>?, Error?) -> Swift.Void)) throws
+    func jsonResponse<T: Codable>(_ router: EndPoint, completion: @escaping (Result<Response<T>,Error>) -> Swift.Void) throws
 
     /**
      Download method
@@ -82,9 +82,9 @@ public protocol NetworkRouterProtocol {
      Sync response request method
 
      - Parameter router: The endpoint we will use for request
-     - Returns tuples: Response and Error for request
+     - Returns result: Result Response or Error for request
      */
-    func syncResponse<T: Codable>(_ router: EndPoint) throws -> (Response<T>?, Error?)
+    func syncResponse<T: Codable>(_ router: EndPoint) throws -> Result<Response<T>, Error>
 
     /// Resume request task
     func resume()
@@ -114,7 +114,7 @@ extension NetworkRouterProtocol {
         request.httpMethod = route.httpMethod.rawValue
 
         switch route.httpMethod {
-        case .get, .head, .delete:
+        case .get, .head, .delete, .options, .connect, .trace:
             break
         case .put, .post, .patch:
             try route.encoder?.encode(urlRequest: &request, bodyParameters: route.bodyParameters)

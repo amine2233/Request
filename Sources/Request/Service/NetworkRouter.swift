@@ -50,9 +50,13 @@ public class NetworkRouter<EndPoint: EndPointType>: NetworkRouterProtocol {
                 logger?.log(route: router, response: response as? HTTPURLResponse, data: data, error: error)
             }
 
+            if let error = error {
+                completion(.failure(error))
+            }
+
             let result = Response<Data>(with: router, urlResponse: response, context: context, data: data, dataObject: data)
 
-            completion(result, error)
+            completion(.success(result))
         })
         resume()
     }
@@ -92,15 +96,19 @@ extension NetworkRouter {
         resume()
     }
     
-    public func jsonResponse<T: Codable>(_ router: EndPoint, completion: @escaping ((Response<T>?, Error?) -> Swift.Void)) throws {
+    public func jsonResponse<T: Codable>(_ router: EndPoint, completion: @escaping ((Result<Response<T>, Error>) -> Swift.Void)) throws {
         let request = try buildRequest(from: router)
         task = session.dataTask(request: request) {[context, logger]  data, response, error in
 
-            let result = Response<T>(with: router, urlResponse: response, context: context)
-            
             if router.isDebug {
                 logger?.log(route: router, response: response as? HTTPURLResponse, data: data, error: error)
             }
+
+            if let error = error {
+                completion(.failure(error))
+            }
+
+            let result = Response<T>(with: router, urlResponse: response, context: context)
 
             if let data = data {
                 result.handleData(data: data, completion: { (data) -> T? in
@@ -119,13 +127,13 @@ extension NetworkRouter {
                 })
             }
             
-            completion(result, error)
+            completion(.success(result))
         }
         
         resume()
     }
     
-    public func syncResponse<T: Codable>(_ router: EndPoint) throws -> (Response<T>?, Error?) {
+    public func syncResponse<T: Codable>(_ router: EndPoint) throws -> Result<Response<T>, Error> {
         let request = try buildRequest(from: router)
         var result: (Response<T>?, Error?) = (nil, nil)
         task = session.sendSynchronousRequest(request: request) {[context, logger] data, response, error in
@@ -149,9 +157,14 @@ extension NetworkRouter {
             result.0 = dataResponse
             result.1 = error
         }
-        
+
         task?.resume()
-        return result
+
+        if let error = result.1 {
+            return .failure(error)
+        }
+
+        return .success(result.0!)
     }
 }
 

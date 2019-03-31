@@ -7,6 +7,7 @@ import Foundation
  - json: Use json type format for request url
  - xml: Use xml type format for request url
  - yml: Use yml type format for request url
+ - html: Use html type format for request url
  */
 public enum HTTPFormat: String {
     case json
@@ -17,6 +18,7 @@ public enum HTTPFormat: String {
 
 /// Endpoint type configuration
 public protocol EndPointType {
+
     /// Request base url
     var baseURL: URL { get }
     /// Path request
@@ -46,6 +48,7 @@ public protocol EndPointType {
 }
 
 extension EndPointType {
+
     /// Debug description request
     var dubugDescription: String {
         return ""

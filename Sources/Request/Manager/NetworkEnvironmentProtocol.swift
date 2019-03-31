@@ -9,6 +9,7 @@ import Foundation
 
 /// NetworkEnvironmentProtocol for create many environement is single app
 public protocol NetworkEnvironmentProtocol {
+
     /// API url we will use this for create url request
     var apiBaseURL: String { get }
     /// API client token
@@ -23,11 +24,10 @@ public protocol NetworkEnvironmentProtocol {
     var baseUrl: String { get }
     /// If secure https or not
     var isHTTPS: Bool { get }
-    /// Scheme (http or https)
-    // var scheme: Bool { get }
 }
 
 extension NetworkEnvironmentProtocol {
+
     /// Absolute api with adding https or http if it required
     public var apiAbsoluteURL: String {
         if apiBaseURL.hasPrefix("http") {

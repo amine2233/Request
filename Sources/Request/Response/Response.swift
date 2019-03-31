@@ -8,6 +8,7 @@
 import Foundation
 
 public enum StatusCode {
+    
     case ok
     case success(statusCode: Int)
     case notFound

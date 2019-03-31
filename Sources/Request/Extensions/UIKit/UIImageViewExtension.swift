@@ -7,7 +7,7 @@ import UIKit.UIActivityIndicatorView
 #if !os(watchOS)
 // MARK: NetworkRouter UIImageView
 
-public extension UIImageView {
+extension UIImageView {
     /**
      Request a new Image for showing in UIImageView
 

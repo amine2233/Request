@@ -24,4 +24,7 @@ public enum HttpMethod: String {
     case patch = "PATCH"
     case delete = "DELETE"
     case head = "HEAD"
+    case options = "OPTIONS"
+    case connect = "CONNECT"
+    case trace = "TRACE"
 }

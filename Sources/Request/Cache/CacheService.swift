@@ -9,6 +9,7 @@ import Foundation
 
 /// Cache Service Protocol
 protocol CacheServiceProtocol {
+
     /// The Key object must be an AnyObject
     associatedtype Key: AnyObject
     /// The Value object must be an AnyObject

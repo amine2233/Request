@@ -7,20 +7,24 @@
 
 import Foundation
 
+/// CoreData Context Protocol
 public protocol CoreDataContextProtocol {
     func reset()
     
     func save() throws
 }
 
+/// URL Session Data Task Protocol
 public protocol URLSessionDataTaskProtocol {
     func resume()
 
     func cancel()
 }
 
+/// The typealias for request response
 public typealias NetworkCompletion = (Data?, URLResponse?, Error?) -> Void
 
+/// The URL Session Protocol
 public protocol URLSessionProtocol {
     /*
      * data task convenience methods.  These methods create tasks that
