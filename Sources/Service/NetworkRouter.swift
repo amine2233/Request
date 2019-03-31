@@ -109,7 +109,13 @@ extension NetworkRouter {
                     if let managedObjectContext = CodingUserInfoKey.managedObjectContext {
                         decoder.userInfo[managedObjectContext] = context
                     }
-                    return try? decoder.decode(T.self, from: data)
+                    do {
+                        return try decoder.decode(T.self, from: data)
+                    } catch let error {
+                        logger?.log(error)
+                        return nil
+                    }
+                    
                 })
             }
             

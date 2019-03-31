@@ -43,6 +43,10 @@ public protocol NetworkLoggerProtocol {
      */
     @discardableResult
     func log(route: EndPointType, response: HTTPURLResponse?, data: Data?, error: Error?) -> Self
+    
+    @discardableResult
+    func log(_ error: Error?) -> Self
+    
 }
 
 /// The standard network logger
@@ -155,6 +159,14 @@ public final class NetworkLogger: NetworkLoggerProtocol {
             print("data:\n\n", data.toString ?? "")
         }
 
+        return self
+    }
+    
+    @discardableResult
+    public func log(_ error: Error?) -> Self {
+        if let error = error {
+            print("Error: \(error.localizedDescription)")
+        }
         return self
     }
 }
