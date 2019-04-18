@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 		s.name 				= "Request"
-		s.version 			= "0.4.5"
+		s.version 			= "1.0.0"
 		s.summary         	= "Sort description of 'Request' framework"
 	    s.homepage        	= "https://github.com/amine2233/Request"
 	    s.license           = { type: 'MIT', file: 'LICENSE' }
@@ -12,9 +12,9 @@ Pod::Spec.new do |s|
 	    s.requires_arc = true
 	    s.source            = { :git => "https://github.com/amine2233/Request.git", :tag => s.version.to_s }
 	    s.source_files      = "Sources/**/*.swift"
-	    s.swift_version = '4.2'
+	    s.swift_version = '4.0'
 	    s.pod_target_xcconfig = {
-    		'SWIFT_VERSION' => '4.2'
+    		'SWIFT_VERSION' => s.swift_version
   		}
   		s.module_name = s.name
 
