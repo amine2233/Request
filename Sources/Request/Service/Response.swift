@@ -62,7 +62,7 @@ extension StatusCode: CustomDebugStringConvertible {
     }
 }
 
-public protocol ResponseProtocol: class {
+public protocol ResponseProtocol: AnyObject {
     associatedtype DataModel
 
     var statusCode: Int { get }
